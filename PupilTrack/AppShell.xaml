@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PupilTrack.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PupilTrack"
+    Shell.FlyoutBehavior="Flyout">
+
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+    
+    <ShellContent
+        Title="HGNDetails"
+        ContentTemplate="{DataTemplate local:HGNDetailsPage}"
+        Route="HGNDetails" />
+    
+    <ShellContent
+        Title="HGNTest"
+        ContentTemplate="{DataTemplate local:HGNTestPage}"
+        Route="HGNTest" />
+
+
+    <ShellContent
+        Title="HGNResults"
+        ContentTemplate="{DataTemplate local:HGNResultsPage}"
+        Route="HGNResults" />
+
+    <ShellContent
+        Title="WalkTurnDetails"
+        ContentTemplate="{DataTemplate local:WalkTurnDetailsPage}"
+        Route="WalkTurnDetails" />
+
+    <ShellContent
+        Title="WalkTurnTest"
+        ContentTemplate="{DataTemplate local:WalkTurnTestPage}"
+        Route="WalkTurnTest" />
+
+    <ShellContent
+        Title="WalkTurnResults"
+        ContentTemplate="{DataTemplate local:WalkTurnResultsPage}"
+        Route="WalkTurnResults" />
+
+    <ShellContent
+        Title="OneLegDetails"
+        ContentTemplate="{DataTemplate local:OneLegDetailsPage}"
+        Route="OneLegDetails" />
+    <ShellContent
+        Title="OneLegTest"
+        ContentTemplate="{DataTemplate local:OneLegTestPage}"
+        Route="OneLegTest" />
+
+    <ShellContent
+        Title="OneLegResults"
+        ContentTemplate="{DataTemplate local:OneLegResultsPage}"
+        Route="OneLegResults" />
+
+    <ShellContent
+        Title="Profile"
+        ContentTemplate="{DataTemplate local:ProfilePage}"
+        Route="Profile" />
+</Shell>
