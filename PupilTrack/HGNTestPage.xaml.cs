@@ -6,12 +6,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui.Graphics.Platform;
 using SkiaSharp;
+using SkiaSharp.Views.Maui;
+using SkiaSharp.Views.Maui.Controls;
 
 namespace PupilTrack
 {
     public partial class HGNTestPage : ContentPage
     {
-        private VideoView videoView;
+        //private VideoView videoView;
         private SKCanvasView canvasView;
         private string videoSource;
 
@@ -20,11 +22,11 @@ namespace PupilTrack
             InitializeComponent();
 
             // Initialize video view and canvas
-            videoView = new VideoView
-            {
-                WidthRequest = 720,
-                HeightRequest = 560
-            };
+            //videoView = new VideoView
+            //{
+            //    WidthRequest = 720,
+            //    HeightRequest = 560
+            //};
             canvasView = new SKCanvasView
             {
                 WidthRequest = 720,
@@ -37,12 +39,12 @@ namespace PupilTrack
             };
             filePicker.Clicked += OnUploadVideoClicked;
 
-            var stackLayout = new StackLayout
-            {
-                Children = { filePicker, videoView, canvasView }
-            };
+            //var stackLayout = new StackLayout
+            //{
+            //    Children = { filePicker, videoView, canvasView }
+            //};
 
-            Content = stackLayout;
+            //Content = stackLayout;
 
             canvasView.PaintSurface += OnCanvasViewPaintSurface;
         }
@@ -58,21 +60,21 @@ namespace PupilTrack
             if (result != null)
             {
                 videoSource = result.FullPath;
-                videoView.Source = MediaSource.FromFile(videoSource);
-                StartGrayscaleFeed();
+                //videoView.Source = MediaSource.FromFile(videoSource);
+                //StartGrayscaleFeed();
             }
         }
 
-        private void StartGrayscaleFeed()
-        {
-            videoView.Play();
+        //private void StartGrayscaleFeed()
+        //{
+        //    //videoView.Play();
 
-            Device.StartTimer(TimeSpan.FromMilliseconds(16), () =>
-            {
-                canvasView.InvalidateSurface(); // Trigger canvas refresh
-                return videoView.IsPlaying;
-            });
-        }
+        //    Device.StartTimer(TimeSpan.FromMilliseconds(16), () =>
+        //    {
+        //        canvasView.InvalidateSurface(); // Trigger canvas refresh
+        //        return videoView.IsPlaying;
+        //    });
+        //}
 
         private void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
         {
