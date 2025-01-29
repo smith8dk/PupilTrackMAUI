@@ -35,6 +35,8 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
 
+            <Button Text="Go to HGN Details" Clicked="HGNDetailsClicked" />
+
         </VerticalStackLayout>
     </ScrollView>
 
