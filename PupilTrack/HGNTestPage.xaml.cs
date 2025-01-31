@@ -1,172 +1,139 @@
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
 using System;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using CommunityToolkit.Maui.Views;
-using SkiaSharp;
-using SkiaSharp.Views.Maui;
-using SkiaSharp.Views.Maui.Controls;
-using CommunityToolkit.Maui.Core.Primitives;
+using Microsoft.Maui.Storage;
 
 namespace PupilTrack
 {
     public partial class HGNTestPage : ContentPage
     {
-        private MediaElement videoView;
-        private SKCanvasView canvasView;
-        private string videoSource;
+        // Flask server URL for video stabilization
+        private const string ServerUrl = "http://192.168.1.40:5000";  // Replace with your Flask server URL
+
+        // Local file path for the stabilized video
+        private string localFilePath;
 
         public HGNTestPage()
         {
             InitializeComponent();
-
-            // Initialize MediaElement and SKCanvasView
-            videoView = new MediaElement
-            {
-                WidthRequest = 720,
-                HeightRequest = 560
-            };
-            canvasView = new SKCanvasView
-            {
-                WidthRequest = 720,
-                HeightRequest = 560
-            };
-
-            var filePicker = new Button
-            {
-                Text = "Upload Video"
-            };
-            filePicker.Clicked += OnUploadVideoClicked;
-
-            var stackLayout = new StackLayout
-            {
-                Children = { filePicker, videoView, canvasView }
-            };
-
-            Content = stackLayout;
-
-            canvasView.PaintSurface += OnCanvasViewPaintSurface;
         }
 
-        private async void OnUploadVideoClicked(object sender, EventArgs e)
+        // Upload the video to the Flask server for stabilization
+        private async Task UploadVideoAsync(string videoPath)
         {
+            // Show the progress indicator while uploading
+            ProgressIndicator.IsVisible = true;
+            ProgressIndicator.IsRunning = true;
+
+            // Read the video file as bytes
+            var fileBytes = await File.ReadAllBytesAsync(videoPath);
+            var videoContent = new ByteArrayContent(fileBytes);
+            videoContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+
+            using var client = new HttpClient();
+            var formContent = new MultipartFormDataContent();
+            formContent.Add(videoContent, "file", "video.mp4");  // Attach the file to the request
+
             try
             {
-                var result = await FilePicker.PickAsync(new PickOptions
+                // Send the POST request to the Flask server
+                var response = await client.PostAsync($"{ServerUrl}/stabilize", formContent);
+                if (response.IsSuccessStatusCode)
                 {
-                    FileTypes = FilePickerFileType.Videos,
-                    PickerTitle = "Select a video"
-                });
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    // Extract the video URL from the server's response
+                    var videoUrl = ExtractVideoUrlFromResponse(jsonResponse);
+                    StatusLabel.Text = "Video stabilized successfully.";
 
-                if (result != null)
+                    // Download the stabilized video
+                    await DownloadVideoAsync(videoUrl);
+                }
+                else
                 {
-                    videoSource = result.FullPath;
-
-                    if (!File.Exists(videoSource))
-                    {
-                        Console.WriteLine($"Selected file does not exist: {videoSource}");
-                        await DisplayAlert("Error", "Selected file is inaccessible.", "OK");
-                        return;
-                    }
-
-                    Console.WriteLine($"Selected video file: {videoSource}");
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        videoView.Source = MediaSource.FromFile(videoSource);
-                        videoView.MediaOpened += (s, args) => Console.WriteLine("Media opened successfully.");
-                        videoView.MediaFailed += (s, args) => Console.WriteLine("Media failed to load.");
-                        StartGrayscaleFeed();
-                    });
+                    StatusLabel.Text = "Failed to stabilize video.";
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error picking video: {ex.Message}");
-                await DisplayAlert("Error", "Unable to upload video.", "OK");
+                StatusLabel.Text = $"Error: {ex.Message}";
+            }
+            finally
+            {
+                // Hide the progress indicator once the process is complete
+                ProgressIndicator.IsVisible = false;
+                ProgressIndicator.IsRunning = false;
             }
         }
 
-        private void StartGrayscaleFeed()
+        private string ExtractVideoUrlFromResponse(string jsonResponse)
         {
-            videoView.Play(); // Start video playback
+            // Clean up the response by removing escape characters and extra spaces
+            jsonResponse = jsonResponse.Trim().Replace("\\n", "").Replace("\\", "");
 
-            Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(16), () =>
+            // Basic string manipulation to extract the URL
+            var startIndex = jsonResponse.IndexOf("\"video_url\":\"") + 13;
+            var endIndex = jsonResponse.IndexOf("\"", startIndex);
+
+            // Return the URL from the extracted portion of the response
+            return jsonResponse.Substring(startIndex, endIndex - startIndex);
+        }
+
+        // Download the stabilized video from the Flask server
+        private async Task DownloadVideoAsync(string videoUrl)
+        {
+            using var client = new HttpClient();
+            var videoData = await client.GetByteArrayAsync(videoUrl);
+
+            // Save the downloaded video locally in the app's data directory
+            localFilePath = Path.Combine(FileSystem.AppDataDirectory, "stabilized_video.mp4");
+            await File.WriteAllBytesAsync(localFilePath, videoData);
+
+            StatusLabel.Text = "Video downloaded successfully.";
+            DownloadLabel.Text = $"Saved to: {localFilePath}";
+            DownloadLabel.IsVisible = true;
+            DownloadButton.IsVisible = true; // Show the download button
+        }
+
+        // Handle the download button click
+        private void OnDownloadButtonClicked(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(localFilePath))
             {
-                if (videoView.CurrentState == MediaElementState.Playing)
+                // Share the stabilized video file
+                Share.RequestAsync(new ShareFileRequest
                 {
-                    canvasView.InvalidateSurface(); // Trigger canvas refresh
-                    Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(16), () => StartGrayscaleFeed());
-                }
+                    Title = "Download Stabilized Video",
+                    File = new ShareFile(localFilePath)
+                });
+            }
+            else
+            {
+                StatusLabel.Text = "No video available to download.";
+            }
+        }
+
+        // Handle video selection from the user (via file picker)
+        private async void OnSelectVideoButtonClicked(object sender, EventArgs e)
+        {
+            // Open the file picker to select a video
+            var fileResult = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Select a video file",
+                FileTypes = FilePickerFileType.Videos
             });
-        }
 
-        private void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
-        {
-            var canvas = args.Surface.Canvas;
-            canvas.Clear(SKColors.Transparent);
-
-            // ROI dimensions
-            float roiX = (float)(canvasView.Width * 0.15);
-            float roiY = (float)(canvasView.Height * 0.15);
-            float roiWidth = (float)(canvasView.Width * 0.6);
-            float roiHeight = (float)(canvasView.Height * 0.6);
-
-            // Draw the ROI rectangle
-            using (var paint = new SKPaint
+            if (fileResult != null)
             {
-                Style = SKPaintStyle.Stroke,
-                Color = SKColors.Blue,
-                StrokeWidth = 2
-            })
-            {
-                canvas.DrawRect(roiX, roiY, roiWidth, roiHeight, paint);
+                // Start uploading the selected video
+                StatusLabel.Text = "Uploading video...";
+                await UploadVideoAsync(fileResult.FullPath);
             }
-
-            // Simulate grayscale conversion and draw the center of the eye (red dot)
-            var centerEye = ApplyThreshold(canvas, roiX, roiY, roiWidth, roiHeight);
-
-            if (centerEye != null)
+            else
             {
-                using (var paint = new SKPaint { Color = SKColors.Red })
-                {
-                    canvas.DrawCircle(roiX + centerEye.Value.X, roiY + centerEye.Value.Y, 5, paint);
-                }
+                StatusLabel.Text = "No video selected.";
             }
-        }
-
-        private SKPoint? ApplyThreshold(SKCanvas canvas, float roiX, float roiY, float roiWidth, float roiHeight)
-        {
-            // Simulate grayscale conversion and thresholding for the region of interest (ROI)
-            // In a real-world application, you would process the video frame's pixel data
-
-            int threshold = 50; // Threshold value
-            int darkPixelCount = 0;
-            float totalX = 0;
-            float totalY = 0;
-
-            for (int x = (int)roiX; x < roiX + roiWidth; x++)
-            {
-                for (int y = (int)roiY; y < roiY + roiHeight; y++)
-                {
-                    // Dummy grayscale value for simulation (you'll need real pixel data)
-                    float gray = (x + y) % 255;
-
-                    if (gray < threshold)
-                    {
-                        totalX += x;
-                        totalY += y;
-                        darkPixelCount++;
-                    }
-                }
-            }
-
-            if (darkPixelCount > 0)
-            {
-                return new SKPoint(totalX / darkPixelCount, totalY / darkPixelCount);
-            }
-
-            return null;
         }
     }
 }

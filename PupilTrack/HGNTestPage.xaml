@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PupilTrack.HGNTestPage"
-             Title="HGNTestPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             BackgroundColor="White">
+
+    <StackLayout Padding="20" Spacing="15">
+        <!-- Title Label -->
+        <Label Text="HGN Video Results"
+               FontSize="24"
+               HorizontalOptions="Center" />
+
+        <!-- Button to select a video file -->
+        <Button Text="Select Video"
+                Clicked="OnSelectVideoButtonClicked"
+                HorizontalOptions="Center" />
+
+        <!-- Label to show success/error messages -->
+        <Label x:Name="StatusLabel"
+               Text="Please select or record a video to upload"
+               HorizontalOptions="Center"
+               TextColor="Black"
+               FontSize="16" />
+
+        <!-- Progress indicator to show upload/progress -->
+        <ActivityIndicator x:Name="ProgressIndicator"
+                           IsRunning="False"
+                           IsVisible="False"
+                           HorizontalOptions="Center" />
+
+        <!-- Label for sharing/downloading the stabilized video -->
+        <Label x:Name="DownloadLabel"
+               Text=""
+               FontSize="14"
+               TextColor="Gray"
+               HorizontalOptions="Center"
+               IsVisible="False" />
+
+        <!-- Button for downloading the video (optional, visible only after processing) -->
+        <Button x:Name="DownloadButton"
+                Text="Download Stabilized Video"
+                HorizontalOptions="Center"
+                IsVisible="False"
+                Clicked="OnDownloadButtonClicked" />
+
+    </StackLayout>
 </ContentPage>
