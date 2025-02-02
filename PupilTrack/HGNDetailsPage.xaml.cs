@@ -9,10 +9,15 @@ public partial class HGNDetailsPage : ContentPage
 
 	private async void HGNDetailsBackClicked(object sender, EventArgs e)
 	{
-    	await Navigation.PushAsync(new MainPage());
+    	await Navigation.PushAsync(new HomePage());
 	}
 
-	private async void HGNDetailsResultsClicked(object sender, EventArgs e)
+    private async void HGNDetailsTestClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new HGNTestPage());
+    }
+
+    private async void HGNDetailsResultsClicked(object sender, EventArgs e)
 	{
     	await Navigation.PushAsync(new HGNResultsPage());
 	}

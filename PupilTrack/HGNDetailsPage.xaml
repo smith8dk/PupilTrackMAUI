@@ -56,6 +56,15 @@
                     Clicked="HGNDetailsBackClicked">
             </Button>
 
+            <!-- Test Button -->
+            <Button Text="Test"
+                    BackgroundColor="Black"
+                    TextColor="White"
+                    CornerRadius="25"
+                    Padding="10,20"
+                    Clicked="HGNDetailsTestClicked">    
+            </Button>
+
             <!-- Results Button -->
             <Button Text="Results"
                     BackgroundColor="Black"

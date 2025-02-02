@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PupilTrack.HomePage"
+             BackgroundColor="#1D2733"
+             Title="Home Page">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" VerticalOptions="Start">
+            <Image Source="logo.png"
+                   HeightRequest="100"
+                   WidthRequest="100"
+                   HorizontalOptions="EndAndExpand"
+                   VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <!-- Content -->
+        <VerticalStackLayout Grid.Row="1" Spacing="30" VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="Welcome!"
+                   FontSize="32"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold" />
+
+            <Grid ColumnSpacing="20" RowSpacing="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Horizontal Gaze Test -->
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="10" HorizontalOptions="Center">
+                    <Frame CornerRadius="50" BackgroundColor="White" HeightRequest="100" WidthRequest="100" Padding="0">
+                        <Image Source="eye_icon.png" HeightRequest="80" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnHGNTestTapped" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Frame>
+                    <Label Text="Horizontal Gaze Test" FontSize="14" TextColor="White" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Walk & Turn Test -->
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="10" HorizontalOptions="Center">
+                    <Frame CornerRadius="50" BackgroundColor="White" HeightRequest="100" WidthRequest="100" Padding="0">
+                        <Image Source="walk_icon.png" HeightRequest="80" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnWalkTurnTestTapped" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Frame>
+                    <Label Text="Walk and Turn Test" FontSize="14" TextColor="White" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- One Leg Stand Test -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="10" HorizontalOptions="Center">
+                    <Frame CornerRadius="50" BackgroundColor="White" HeightRequest="100" WidthRequest="100" Padding="0">
+                        <Image Source="balance_icon.png" HeightRequest="65" WidthRequest="65" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnOneLegTestTapped" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Frame>
+                    <Label Text="One Leg Stand Test" FontSize="14" TextColor="White" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+                
+                <!-- Help Pages -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="10" HorizontalOptions="Center">
+                    <Frame CornerRadius="50" BackgroundColor="White" HeightRequest="100" WidthRequest="100" Padding="0">
+                        <Image Source="help_icon.png" HeightRequest="60" WidthRequest="60" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.GestureRecognizers>
+                                
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Frame>
+                    <Label Text="Help Pages" FontSize="14" TextColor="White" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
