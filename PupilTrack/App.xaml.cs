@@ -2,10 +2,18 @@
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
+    
+    public Page HomePage { get; private set; }
 
-		MainPage = new NavigationPage(new MainPage());
-	}
+    public App()
+    {
+        InitializeComponent();
+
+        
+        HomePage = new AppShell();
+        
+        MainPage = HomePage;
+
+        MainPage = new NavigationPage(new HomePage());
+    }
 }

@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="PupilTrack.HGNTestPage"
-    BackgroundColor="White">
+    BackgroundColor="#1A1F26">
 
     <Grid>
         <!-- Main Content -->
@@ -53,13 +53,17 @@
                 <!-- Upload Video Button -->
                 <Button Text="Select Video"
                         Clicked="OnSelectVideoButtonClicked"
-                        HorizontalOptions="Center" />
+                        HorizontalOptions="Center"
+                        BackgroundColor="White"
+                        TextColor="Black"
+                        FontAttributes="Bold"
+                        CornerRadius="10"  />
 
                 <!-- Status Message -->
                 <Label x:Name="StatusLabel"
                        Text="Please select or record a video to upload"
                        HorizontalOptions="Center"
-                       TextColor="Black"
+                       TextColor="White"
                        FontSize="16" />
 
                 <!-- Progress Indicator (if needed outside the overlay) -->
@@ -81,6 +85,9 @@
                         Text="Download Stabilized Video"
                         HorizontalOptions="Center"
                         IsVisible="False"
+                        BackgroundColor="White"
+                        TextColor="Black"
+                        CornerRadius="10"
                         Clicked="OnDownloadButtonClicked" />
             </StackLayout>
         </ScrollView>
