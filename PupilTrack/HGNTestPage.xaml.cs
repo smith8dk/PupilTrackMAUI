@@ -262,5 +262,10 @@ namespace PupilTrack
                 StatusLabel.Text = "No video selected.";
             }
         }
+
+        private void HGNDetailsResultsClicked(object sender, EventArgs e)
+        {
+            DisplayAlert("Results Button Clicked", "You clicked the Results button!", "OK");
+        }
     }
 }
