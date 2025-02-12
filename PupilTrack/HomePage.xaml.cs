@@ -9,7 +9,7 @@ public partial class HomePage : ContentPage
 
     private async void OnLogoTapped(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new InfoPage());
+        //await Navigation.PushAsync(new InfoPage());
     }
    
     private async void OnProfileTapped(object sender, EventArgs e)
