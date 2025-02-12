@@ -2,11 +2,81 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PupilTrack.ProfilePage"
-             Title="ProfilePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             BackgroundColor="#1A1F26"
+             Title="Profile Page">
+
+    <!-- Grid for Full-Page Centering -->
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <!-- Take up all available vertical space -->
+            <RowDefinition Height="Auto" />
+            <!-- Automatically adjust to the content's height -->
+            <RowDefinition Height="*" />
+            <!-- Take up remaining space -->
+        </Grid.RowDefinitions>
+
+        <VerticalStackLayout Spacing="20"
+                             Padding="30"
+                             Grid.Row="1"  >
+
+            <!-- Circular Profile Picture -->
+        <Frame WidthRequest="120" HeightRequest="120"
+               BackgroundColor="White"
+               Padding="5"
+               CornerRadius="60"
+               HorizontalOptions="Center"
+               HasShadow="False">
+            <Image Source="avatar_icon.png" Aspect="AspectFill" Clip="circle"/>
+        </Frame>
+
+        <!-- Edit Profile Button -->
+        <Button Text="Edit Profile"
+                BackgroundColor="White"
+                TextColor="Black"
+                Padding="10"
+                CornerRadius="10"
+                HorizontalOptions="Center"
+                FontAttributes="Bold"
+                WidthRequest="125"/>
+        
+        <!-- User Info Fields (Each with Separate Backdrops) -->
+        <Frame BackgroundColor="#6E6F71"
+               Padding="10"
+               CornerRadius="10"
+               WidthRequest="250"
+               HasShadow="False"
+               HorizontalOptions="Center">
+            <Label Text="Username" TextColor="White" FontSize="18" HorizontalTextAlignment="Center"/>
+        </Frame>
+
+        <Frame BackgroundColor="#6E6F71"
+               Padding="10"
+               CornerRadius="10"
+               WidthRequest="250"
+               HasShadow="False"
+               HorizontalOptions="Center">
+            <Label Text="Email" TextColor="White" FontSize="18" HorizontalTextAlignment="Center"/>
+        </Frame>
+
+        <Frame BackgroundColor="#6E6F71"
+               Padding="10"
+               CornerRadius="10"
+               WidthRequest="250"
+               HasShadow="False"
+               HorizontalOptions="Center">
+            <Label Text="Phone Number" TextColor="White" FontSize="18" HorizontalTextAlignment="Center"/>
+        </Frame>
+
+        <!-- Log Out Button -->
+        <Button Text="Log Out"
+                BackgroundColor="White"
+                TextColor="Black"
+                Padding="10"
+                CornerRadius="10"
+                HorizontalOptions="Center"
+                FontAttributes="Bold"
+                WidthRequest="125"/>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>
