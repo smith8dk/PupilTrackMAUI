@@ -2,11 +2,91 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PupilTrack.OneLegDetailsPage"
-             Title="OneLegDetailsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="OneLegDetailsPage"
+             BackgroundColor="#1A1F26">
+
+    <VerticalStackLayout Spacing="10" Padding="10" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="400">
+        <!-- Title Section -->
+        <Label Text="One Leg Stand Test"
+               FontSize="24"
+               HorizontalOptions="Center"
+               TextColor="White"
+               Margin="0,20,0,20"
+               HorizontalTextAlignment="Center"
+               FontAttributes="Bold"
+               LineHeight="1.5" />
+
+        <!-- Explanation Container -->
+        <Frame BackgroundColor="#1A1F26" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
+           <StackLayout Padding="15">
+            <Label Text="The One Leg Stand Test is a field sobriety test that assesses balance, coordination, and attention"
+                   TextColor="#ddd"
+                   FontSize="16"
+                   LineHeight="1.5"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+            </StackLayout> 
+        </Frame>
+
+        <!-- Tutorial Container -->
+        <Frame BackgroundColor="#1A1F26" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
+            <StackLayout Padding="15">
+                <Label Text="Instructions"
+               TextColor="#ddd"
+               FontSize="18"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"/>
+                <Label Text="1. Stand with feet together and arms at the recipient’s side" TextColor="#ddd" FontSize="14"/>
+                <Label Text="2. Lift one foot, six inches off the ground. Keep the foot parallel to the ground" TextColor="#ddd" FontSize="14"/>
+                <Label Text="3.	Focus on the elevated foot and count aloud for 30 seconds" TextColor="#ddd" FontSize="14"/>
+                <Label Text="4.	After concluding the count, the recipient may reset their feet" TextColor="#ddd" FontSize="14"/>
+            </StackLayout>
+        </Frame>
+
+        <!-- Clues Container -->
+        <Frame BackgroundColor="#1A1F26" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
+            <StackLayout Padding="15">
+                <Label Text="Clues of Impairment"
+                    TextColor="#ddd"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    />
+                <Label Text="1.	Swaying while balancing" TextColor="#ddd" FontSize="14"/>
+                <Label Text="2.	Using arms for balance" TextColor="#ddd" FontSize="14"/>
+                <Label Text="3.	Hopping" TextColor="#ddd" FontSize="14"/>
+                <Label Text="4.	Putting their foot down (losing their balance) " TextColor="#ddd" FontSize="14"/>
+                
+            </StackLayout>
+        </Frame>
+
+        <!-- Button Container -->
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Padding="10" Margin="5">
+            <!-- Back Button -->
+            <Button Text="Return"
+                    BackgroundColor="white "
+                    TextColor="black"
+                    CornerRadius="25"
+                    Padding="10,10"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    >
+            </Button>
+
+            <!-- Test Button -->
+            <Button Text="Test"
+                    BackgroundColor="white"
+                    TextColor="black"
+                    CornerRadius="25"
+                    Padding="10,10"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    >    
+            </Button>
+        </HorizontalStackLayout>
+     </VerticalStackLayout>    
 </ContentPage>
