@@ -1,56 +1,105 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="PupilTrack.HGNTestPage"
-             BackgroundColor="#1A1F26">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="PupilTrack.HGNTestPage"
+    BackgroundColor="#1A1F26">
 
-    <StackLayout Padding="20" Spacing="15">
-        <!-- Title Label -->
-        <Label Text="HGN Video Results"
-               TextColor="White"
-               FontSize="24"
-               HorizontalOptions="Center" />
+    <Grid>
+        <!-- Main Content -->
+        <ScrollView>
+            <StackLayout x:Name="MainContent" Padding="20" Spacing="15">
+                <!-- Camera and Record Button Overlay -->
+                <Grid HorizontalOptions="Center" WidthRequest="300" HeightRequest="400">
+                    <!-- Camera View -->
+                    <toolkit:CameraView x:Name="CameraViewControl"
+                                        WidthRequest="300"
+                                        HeightRequest="400"
+                                        BackgroundColor="Black"
+                                        MediaCaptured="MyCamera_MediaCaptured" />
 
-        <!-- Button to select a video file -->
-        <Button Text="Select Video"
-                Clicked="OnSelectVideoButtonClicked"
-                HorizontalOptions="Center"
-                BackgroundColor="White"
-                TextColor="Black"
-                FontAttributes="Bold"
-                CornerRadius="10"  />
+                        <Button x:Name="RecordButton"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            FontSize="30"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="40"
+                            BorderColor="White"
+                            BorderWidth="3"
+                            HorizontalOptions="Center"
+                            VerticalOptions="End"
+                            Margin="0,0,0,20"
+                            Clicked="OnRecordButtonClicked" />
 
-        <!-- Label to show success/error messages -->
-        <Label x:Name="StatusLabel"
-               Text="Please select or record a video to upload"
-               HorizontalOptions="Center"
-               TextColor="White"
-               FontSize="16" />
+                    <!-- Switch Camera Button (to the right of the record button) --><!--
+                    <Button x:Name="SwitchCameraButton"
+                            BackgroundColor="Gray"
+                            WidthRequest="20"
+                            HeightRequest="20"
+                            CornerRadius="20"
+                            HorizontalOptions="Start"
+                            VerticalOptions="End"
+                            Margin="230,0,0,20"
+                            />-->
+                </Grid>
 
-        <!-- Progress indicator to show upload/progress -->
-        <ActivityIndicator x:Name="ProgressIndicator"
-                           IsRunning="False"
-                           IsVisible="False"
-                           HorizontalOptions="Center" />
+                <!-- Video WebView (for playing back recorded video) -->
+                <WebView x:Name="VideoWebView"
+                         IsVisible="False"
+                         HeightRequest="300"
+                         WidthRequest="400"/>
 
-        <!-- Label for sharing/downloading the stabilized video -->
-        <Label x:Name="DownloadLabel"
-               Text=""
-               FontSize="14"
-               TextColor="Gray"
-               HorizontalOptions="Center"
-               IsVisible="False" />
+                <!-- Upload Video Button -->
+                <Button Text="Select Video"
+                        Clicked="OnSelectVideoButtonClicked"
+                        HorizontalOptions="Center"
+                        BackgroundColor="White"
+                        TextColor="Black"
+                        FontAttributes="Bold"
+                        CornerRadius="10"  />
 
-        <!-- Button for downloading the video (optional, visible only after processing) -->
-        <Button x:Name="DownloadButton"
-                Text="Download Stabilized Video"
-                HorizontalOptions="Center"
-                IsVisible="False"
-                BackgroundColor="White"
-                TextColor="Black"
-                CornerRadius="10"
-                Clicked="OnDownloadButtonClicked" />
+                <!-- Status Message -->
+                <Label x:Name="StatusLabel"
+                       Text="Please select or record a video to upload"
+                       HorizontalOptions="Center"
+                       TextColor="White"
+                       FontSize="16" />
 
-    </StackLayout>
+                <!-- Progress Indicator (if needed outside the overlay) -->
+                <ActivityIndicator x:Name="ProgressIndicator"
+                                   IsRunning="False"
+                                   IsVisible="False"
+                                   HorizontalOptions="Center" />
+
+                <!-- Download Label -->
+                <Label x:Name="DownloadLabel"
+                       Text=""
+                       FontSize="14"
+                       TextColor="Gray"
+                       HorizontalOptions="Center"
+                       IsVisible="False" />
+
+                <!-- Download Button -->
+                <Button x:Name="DownloadButton"
+                        Text="Download Stabilized Video"
+                        HorizontalOptions="Center"
+                        IsVisible="False"
+                        BackgroundColor="White"
+                        TextColor="Black"
+                        CornerRadius="10"
+                        Clicked="OnDownloadButtonClicked" />
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Loading Overlay (initially hidden) -->
+        <Grid x:Name="LoadingOverlay" BackgroundColor="Black" Opacity="0.8" IsVisible="False">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="True" Color="White" />
+                <Label Text="Processing video, please wait..." 
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </Grid>
+    </Grid>
 </ContentPage>
