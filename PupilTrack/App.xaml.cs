@@ -12,8 +12,8 @@ public partial class App : Application
         
         HomePage = new AppShell();
         
-        MainPage = HomePage;
+        HomePage = HomePage;
 
-        MainPage = new NavigationPage(new HomePage());
+        HomePage = new NavigationPage(new HomePage());
     }
 }
