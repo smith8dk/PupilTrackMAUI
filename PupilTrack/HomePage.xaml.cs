@@ -7,6 +7,16 @@ public partial class HomePage : ContentPage
         InitializeComponent();
     }
 
+    private async void OnLogoTapped(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new InfoPage());
+    }
+   
+    private async void OnProfileTapped(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ProfilePage());
+    }
+
     private async void OnHGNTestTapped(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new HGNDetailsPage());
@@ -23,9 +33,9 @@ public partial class HomePage : ContentPage
         await Navigation.PushAsync(new OneLegDetailsPage());
     }
 
-   /* private async void OnHelpPagesTapped(object sender, EventArgs e)
+   private async void OnHelpPageTapped(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new HelpPage());
-    }*/
+    }
 
 }

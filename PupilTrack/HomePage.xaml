@@ -2,23 +2,42 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PupilTrack.HomePage"
-             BackgroundColor="#1D2733"
+             BackgroundColor="#1A1F26"
              Title="Home Page">
 
     <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <HorizontalStackLayout Grid.Row="0" Spacing="10" VerticalOptions="Start">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" VerticalOptions="Start">
+            <!-- Logo (Left) -->
             <Image Source="logo.png"
-                   HeightRequest="100"
-                   WidthRequest="100"
-                   HorizontalOptions="EndAndExpand"
-                   VerticalOptions="Center" />
-        </HorizontalStackLayout>
+           HeightRequest="75"
+           WidthRequest="75"
+           Grid.Column="0"
+           HorizontalOptions="Start"
+           VerticalOptions="Center" >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnLogoTapped" />
+                </Image.GestureRecognizers>
+            </Image>
+
+            <!-- Profile Image (Right) -->
+            <Image Source="profile_icon.png"
+           HeightRequest="50"
+           WidthRequest="50"
+           Grid.Column="2"
+           HorizontalOptions="End"
+           VerticalOptions="Center">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnProfileTapped" />
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+
 
         <!-- Content -->
         <VerticalStackLayout Grid.Row="1" Spacing="30" VerticalOptions="Center" HorizontalOptions="Center">
@@ -79,7 +98,7 @@
                     <Frame CornerRadius="50" BackgroundColor="White" HeightRequest="100" WidthRequest="100" Padding="0">
                         <Image Source="help_icon.png" HeightRequest="60" WidthRequest="60" HorizontalOptions="Center" VerticalOptions="Center">
                             <Image.GestureRecognizers>
-                                
+                                <TapGestureRecognizer Tapped="OnHelpPageTapped" />
                             </Image.GestureRecognizers>
                         </Image>
                     </Frame>
