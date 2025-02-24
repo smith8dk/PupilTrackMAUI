@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting; // For SkiaSharp integration
 using CommunityToolkit.Maui;              // For CommunityToolkit
 using CommunityToolkit.Maui.Camera; 
@@ -14,7 +14,6 @@ public static class MauiProgram
             .UseMauiApp<App>()
             .UseSkiaSharp() // Initialize SkiaSharp
             .UseMauiCommunityToolkitCamera()
-            .UseMauiCommunityToolkitMediaElement()
             .UseMauiCommunityToolkitMediaElement()
             .ConfigureFonts(fonts =>
             {

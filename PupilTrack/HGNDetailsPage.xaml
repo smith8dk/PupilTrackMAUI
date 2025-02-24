@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PupilTrack.HGNDetailsPage"
-             Title="HGNDetailsPage"
-             BackgroundColor="#1A1F26">
+             Title="HGN Details Page"
+             BackgroundColor="#182330">
 
     <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="1000" WidthRequest="400">
         <!-- Title Section -->
@@ -13,10 +13,11 @@
                TextColor="White"
                Margin="0,20,0,20"
                HorizontalTextAlignment="Center"
+               FontAttributes="Bold"
                LineHeight="1.5" />
 
         <!-- Explanation Container -->
-        <Frame BackgroundColor="#1C2A39" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
+        <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
             <Label Text="HGN is a standardized field sobriety test to assess a person's level of intoxication by evaluating involuntary eye movement."
                    TextColor="#ddd"
                    FontSize="16"
@@ -26,7 +27,7 @@
         </Frame>
 
         <!-- Tutorial Container -->
-        <Frame BackgroundColor="#1C2A39" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
+        <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
             <Label Text="User conducting the test will direct the user taking the test to gaze at a horizontally moving object (such as a finger or pen). The object must be 12-15 inches from the users face and is slowly moved left to right three times total."
                    TextColor="#ddd"
                    FontSize="16"
@@ -36,7 +37,7 @@
         </Frame>
 
         <!-- Clues Container -->
-        <Frame BackgroundColor="#1C2A39" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
+        <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
             <Label Text="The presence of nystagmus or involuntary movement of the eyes such as jerking or slipping."
                    TextColor="#ddd"
                    FontSize="16"
@@ -46,33 +47,31 @@
         </Frame>
 
         <!-- Button Container -->
-        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Padding="20" Margin="5">
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Padding="10" Margin="5">
             <!-- Back Button -->
             <Button Text="Back"
-                    BackgroundColor="Black"
-                    TextColor="White"
+                    BackgroundColor="white "
+                    TextColor="black"
                     CornerRadius="25"
-                    Padding="10,20"
+                    Padding="10,10"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
                     Clicked="HGNDetailsBackClicked">
             </Button>
 
             <!-- Test Button -->
             <Button Text="Test"
-                    BackgroundColor="Black"
-                    TextColor="White"
+                    BackgroundColor="white "
+                    TextColor="black"
                     CornerRadius="25"
-                    Padding="10,20"
+                    Padding="10,10"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
                     Clicked="HGNDetailsTestClicked">    
             </Button>
 
-            <!-- Results Button -->
-            <Button Text="Results"
-                    BackgroundColor="Black"
-                    TextColor="White"
-                    CornerRadius="25"
-                    Padding="10,20"
-                    Clicked="HGNDetailsResultsClicked">
-            </Button>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PupilTrack.HomePage"
-             BackgroundColor="#1A1F26"
+             BackgroundColor="#182330"
              Title="Home Page">
 
     <Grid Padding="20">

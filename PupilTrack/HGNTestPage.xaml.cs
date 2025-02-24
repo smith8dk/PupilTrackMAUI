@@ -274,5 +274,10 @@ namespace PupilTrack
             }
             return false;
         }
+
+        private void HGNDetailsResultsClicked(object sender, EventArgs e)
+        {
+            DisplayAlert("Results Button Clicked", "You clicked the Results button!", "OK");
+        }
     }
 }
