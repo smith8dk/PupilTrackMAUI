@@ -18,7 +18,7 @@
                                         BackgroundColor="Black"
                                         MediaCaptured="MyCamera_MediaCaptured" />
 
-                        <Button x:Name="RecordButton"
+                    <Button x:Name="RecordButton"
                             BackgroundColor="Red"
                             TextColor="White"
                             FontSize="30"
@@ -32,7 +32,8 @@
                             Margin="0,0,0,20"
                             Clicked="OnRecordButtonClicked" />
 
-                    <!-- Switch Camera Button (to the right of the record button) --><!--
+                    <!-- Switch Camera Button (to the right of the record button) -->
+                    <!--
                     <Button x:Name="SwitchCameraButton"
                             BackgroundColor="Gray"
                             WidthRequest="20"
