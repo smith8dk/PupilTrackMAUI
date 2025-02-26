@@ -19,8 +19,7 @@ namespace PupilTrack
         private bool isRecording = false;
         private string recordedVideoPath;
 
-        // Folder where processed videos are stored
-        // (Adjust this path if needed)
+        // Folder where processed videos are stored (adjust this path if needed)
         private const string ProcessedFolderPath = @"C:\Users\dswsm\Downloads\PupilTrackMAUI-master\PupilTrackMAUI-master\PupilTrack\Resources\python\processed";
 
         public HGNTestPage()
@@ -31,14 +30,12 @@ namespace PupilTrack
         // Helper methods for showing/hiding the loading overlay.
         private void ShowLoadingScreen()
         {
-            // Hide the main UI content and show the overlay.
             MainContent.IsVisible = false;
             LoadingOverlay.IsVisible = true;
         }
 
         private void HideLoadingScreen()
         {
-            // Hide the overlay and show the main UI again.
             LoadingOverlay.IsVisible = false;
             MainContent.IsVisible = true;
         }
@@ -81,10 +78,10 @@ namespace PupilTrack
 
                         await DisplayAlert("Recording Complete", $"Video saved at:\n{recordedVideoPath}", "OK");
 
-                        // Optionally, display the recorded video.
+                        // Optionally display the recorded video.
                         ShowRecordedVideo(recordedVideoPath);
 
-                        // Start processing/uploading the video.
+                        // Automatically upload the video once recording is complete.
                         await UploadVideoAsync(recordedVideoPath);
                     }
                 }
@@ -104,11 +101,10 @@ namespace PupilTrack
             await DisplayAlert("Recording Stopped", "Your video has been saved.", "OK");
         }
 
-        // Displays the recorded video using a WebView.
+        // Optionally display the recorded video using a WebView.
         private void ShowRecordedVideo(string videoPath)
         {
             CameraViewControl.IsVisible = false;
-            // Convert the local file path to a proper file URI.
             string fileUri = new Uri(videoPath).AbsoluteUri;
 
             string htmlString = $@"
@@ -154,12 +150,12 @@ namespace PupilTrack
                 }
                 else
                 {
-                    // If response is not successful, we log error and continue to check for the processed video.
+                    // If response is not successful, log error if needed.
                 }
             }
             catch (Exception ex)
             {
-                // Log error if necessary; we'll check the folder next.
+                await DisplayAlert("Error", $"Error: {ex.Message}", "OK");
             }
             finally
             {
@@ -226,17 +222,11 @@ namespace PupilTrack
             VideoWebView.IsVisible = true;
         }
 
-        // Shares the processed video file when the download button is clicked.
+        // Download button event handler stub (if DownloadButton exists in XAML)
         private void OnDownloadButtonClicked(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(localFilePath))
-            {
-                Share.RequestAsync(new ShareFileRequest
-                {
-                    Title = "Download Stabilized Video",
-                    File = new ShareFile(localFilePath)
-                });
-            }
+            // This is a stub to satisfy the XAML reference.
+            DisplayAlert("Download", "Download button clicked.", "OK");
         }
 
         // Handles video selection from the user (via file picker) and starts processing.
@@ -265,19 +255,13 @@ namespace PupilTrack
                 var files = Directory.GetFiles(ProcessedFolderPath, "*.mp4");
                 if (files.Length > 0)
                 {
-                    // Optionally, sort files by last write time descending.
+                    // Sort files descending by last write time.
                     Array.Sort(files, (a, b) => File.GetLastWriteTime(b).CompareTo(File.GetLastWriteTime(a)));
-                    // Consider the most recent file as the processed video.
                     localFilePath = files[0];
                     return true;
                 }
             }
             return false;
-        }
-
-        private void HGNDetailsResultsClicked(object sender, EventArgs e)
-        {
-            DisplayAlert("Results Button Clicked", "You clicked the Results button!", "OK");
         }
     }
 }
