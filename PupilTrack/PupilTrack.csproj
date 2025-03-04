@@ -49,18 +49,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Resources\python\.vs\ProjectSettings.json" />
-	  <Content Include="Resources\python\.vs\python\v17\DocumentLayout.json" />
-	  <Content Include="Resources\python\.vs\VSWorkspaceState.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="Resources\python\.vs\python\FileContentIndex\e97dc44e-15b2-4f80-9998-703d2291dfcc.vsidx" />
-	  <None Include="Resources\python\.vs\python\v17\workspaceFileList.bin" />
-	  <None Include="Resources\python\.vs\slnx.sqlite" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui.Camera" Version="2.0.2" />
 		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.1" />
@@ -116,10 +104,6 @@
 	  <MauiXaml Update="WalkTurnTestPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Resources\python\venv\Include\" />
 	</ItemGroup>
 
 </Project>
