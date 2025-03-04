@@ -1,101 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:local="clr-namespace:PupilTrack.Converters"
-    x:Class="PupilTrack.HGNResultsPage"
-    Title="MediaElement"
-    BackgroundColor="#1A1F26">
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <!-- Converter for formatting seconds (or TimeSpan) as mm:ss -->
-            <local:SecondsToStringConverter x:Key="SecondsToStringConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
-    <ScrollView>
-        <Grid>
-            <!-- Define five rows:
-                 Row 0: VideoPlayer (MediaElement)
-                 Row 1: Current state/dimensions label
-                 Row 2: Playback control buttons (Play, Pause, Stop, Mute)
-                 Row 3: Position slider
-                 Row 4: Position/Duration labels
-            -->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="220" />
-                <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <!-- MediaElement (VideoPlayer) with no default Source -->
-            <toolkit:MediaElement
-                x:Name="VideoPlayer"
-                Grid.Row="0"
-                ShouldAutoPlay="False"
-                MetadataArtworkUrl=""
-                MetadataTitle=""
-                MetadataArtist=""
-                MediaEnded="OnMediaEnded"
-                MediaFailed="OnMediaFailed"
-                MediaOpened="OnMediaOpened"
-                PositionChanged="OnPositionChanged"
-                SeekCompleted="OnSeekCompleted"
-                ShouldShowPlaybackControls ="false"/>
-
-            <!-- Current state and dimensions label -->
-            <HorizontalStackLayout Grid.Row="1" Padding="0,0,0,15" HorizontalOptions="Center">
-                <Label>
-                    <Label.Text>
-                        <MultiBinding StringFormat="{}Current State: {0} - Dimensions: {1}x{2}">
-                            <Binding Path="CurrentState" Source="{x:Reference VideoPlayer}" />
-                            <Binding Path="MediaWidth" Source="{x:Reference VideoPlayer}" />
-                            <Binding Path="MediaHeight" Source="{x:Reference VideoPlayer}" />
-                        </MultiBinding>
-                    </Label.Text>
-                </Label>
-            </HorizontalStackLayout>
-
-            <!-- Playback control buttons -->
-            <Grid Grid.Row="2" Padding="0,10,0,10" ColumnDefinitions="*,*,*,*" ColumnSpacing="5">
-                <Button Grid.Column="0" Text="Play" Clicked="OnPlayClicked" />
-                <Button Grid.Column="1" Text="Pause" Clicked="OnPauseClicked" />
-                <Button Grid.Column="2" Text="Stop" Clicked="OnStopClicked" />
-                <Button Grid.Column="3" Text="Mute" Clicked="OnMuteClicked">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding ShouldMute, Source={x:Reference VideoPlayer}}"
-                                     Value="True">
-                            <Setter Property="Text" Value="Unmute" />
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding ShouldMute, Source={x:Reference VideoPlayer}}"
-                                     Value="False">
-                            <Setter Property="Text" Value="Mute" />
-                        </DataTrigger>
-                    </Button.Triggers>
-                </Button>
-            </Grid>
-
-            <!-- Slider for media position -->
-            <Slider
-                x:Name="PositionSlider"
-                Grid.Row="3"
-                MinimumTrackColor="Gray"
-                DragStarted="Slider_DragStarted"
-                DragCompleted="Slider_DragCompleted" />
-
-            <!-- Labels for current position and duration -->
-            <Grid Grid.Row="4" HorizontalOptions="Fill">
-                <Label HorizontalOptions="Start" 
-                       Text="{Binding Position, Source={x:Reference VideoPlayer}, Converter={StaticResource SecondsToStringConverter}}" />
-                <Label HorizontalOptions="End" HorizontalTextAlignment="End" 
-                       Text="{Binding Duration, Source={x:Reference VideoPlayer}, Converter={StaticResource SecondsToStringConverter}}" />
-            </Grid>
-        </Grid>
-    </ScrollView>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PupilTrack.HGNResultsPage"
+             Title="HGN Results Page">
+    <VerticalStackLayout>
+        <Label 
+            Text="Welcome to .NET MAUI!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
 </ContentPage>

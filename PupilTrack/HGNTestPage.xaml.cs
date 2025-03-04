@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace PupilTrack
@@ -18,10 +17,6 @@ namespace PupilTrack
         private string localFilePath;
         private bool isRecording = false;
         private string recordedVideoPath;
-
-        // Folder where processed videos are stored
-        // (Adjust this path if needed)
-        private const string ProcessedFolderPath = @"C:\Users\dswsm\Downloads\PupilTrackMAUI-master\PupilTrackMAUI-master\PupilTrack\Resources\python\processed";
 
         public HGNTestPage()
         {
@@ -81,7 +76,7 @@ namespace PupilTrack
 
                         await DisplayAlert("Recording Complete", $"Video saved at:\n{recordedVideoPath}", "OK");
 
-                        // Optionally, display the recorded video.
+                        // Display the recorded video (optional).
                         ShowRecordedVideo(recordedVideoPath);
 
                         // Start processing/uploading the video.
@@ -128,85 +123,11 @@ namespace PupilTrack
             VideoWebView.IsVisible = true;
         }
 
-        // Uploads the video to the Flask server for stabilization and processing.
-        private async Task UploadVideoAsync(string videoPath)
-        {
-            ShowLoadingScreen();
-            ProgressIndicator.IsVisible = true;
-            ProgressIndicator.IsRunning = true;
-
-            var fileBytes = await File.ReadAllBytesAsync(videoPath);
-            var videoContent = new ByteArrayContent(fileBytes);
-            videoContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
-
-            using var client = new HttpClient();
-            var formContent = new MultipartFormDataContent();
-            formContent.Add(videoContent, "file", "video.mp4");
-
-            try
-            {
-                var response = await client.PostAsync($"{ServerUrl}/stabilize", formContent);
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonResponse = await response.Content.ReadAsStringAsync();
-                    var videoUrl = ExtractVideoUrlFromResponse(jsonResponse);
-                    await DownloadVideoAsync(videoUrl);
-                }
-                else
-                {
-                    // If response is not successful, we log error and continue to check for the processed video.
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log error if necessary; we'll check the folder next.
-            }
-            finally
-            {
-                ProgressIndicator.IsVisible = false;
-                ProgressIndicator.IsRunning = false;
-            }
-
-            // Wait 5 seconds for the video to fully process.
-            if (await CheckForProcessedVideoAsync())
-            {
-                // Navigate to the HGNResultsPage if a processed video is found.
-                await Navigation.PushAsync(new HGNResultsPage());
-            }
-            else
-            {
-                HideLoadingScreen();
-                await DisplayAlert("Error", "Processed video not found.", "OK");
-            }
-        }
-
-        // Extracts the processed video URL from the JSON response.
-        private string ExtractVideoUrlFromResponse(string jsonResponse)
-        {
-            jsonResponse = jsonResponse.Trim().Replace("\\n", "").Replace("\\", "");
-            var startIndex = jsonResponse.IndexOf("\"video_url\":\"") + 13;
-            var endIndex = jsonResponse.IndexOf("\"", startIndex);
-            return jsonResponse.Substring(startIndex, endIndex - startIndex);
-        }
-
-        // Downloads the processed video from the Flask server.
-        private async Task DownloadVideoAsync(string videoUrl)
-        {
-            using var client = new HttpClient();
-            var videoData = await client.GetByteArrayAsync(videoUrl);
-
-            localFilePath = Path.Combine(FileSystem.AppDataDirectory, "stabilized_video.mp4");
-            await File.WriteAllBytesAsync(localFilePath, videoData);
-
-            // Optionally display the processed video.
-            ShowProcessedVideo(localFilePath);
-            HideLoadingScreen();
-        }
-
-        // Displays the processed video using a WebView.
+        // Displays the processed video (directly from the local directory) using a WebView.
         private void ShowProcessedVideo(string videoPath)
         {
             CameraViewControl.IsVisible = false;
+            // Convert the local file path to a file URI.
             string fileUri = new Uri(videoPath).AbsoluteUri;
 
             string htmlString = $@"
@@ -226,6 +147,85 @@ namespace PupilTrack
             VideoWebView.IsVisible = true;
         }
 
+        // Uploads the video to the Flask server for stabilization and processing.
+        private async Task UploadVideoAsync(string videoPath)
+        {
+            // Show the loading overlay.
+            ShowLoadingScreen();
+
+            // Show the progress indicator.
+            ProgressIndicator.IsVisible = true;
+            ProgressIndicator.IsRunning = true;
+
+            // Read the video file as bytes.
+            var fileBytes = await File.ReadAllBytesAsync(videoPath);
+            var videoContent = new ByteArrayContent(fileBytes);
+            videoContent.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
+
+            using var client = new HttpClient();
+            var formContent = new MultipartFormDataContent();
+            formContent.Add(videoContent, "file", "video.mp4");
+
+            try
+            {
+                // Send the POST request to the Flask server.
+                var response = await client.PostAsync($"{ServerUrl}/stabilize", formContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    // Extract the processed video URL from the response.
+                    var videoUrl = ExtractVideoUrlFromResponse(jsonResponse);
+                    StatusLabel.Text = "Video stabilized successfully.";
+
+                    // Download the processed video.
+                    await DownloadVideoAsync(videoUrl);
+                }
+                else
+                {
+                    StatusLabel.Text = "Failed to stabilize video.";
+                    HideLoadingScreen();
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusLabel.Text = $"Error: {ex.Message}";
+                HideLoadingScreen();
+            }
+            finally
+            {
+                ProgressIndicator.IsVisible = false;
+                ProgressIndicator.IsRunning = false;
+            }
+        }
+
+        // Extracts the processed video URL from the JSON response.
+        private string ExtractVideoUrlFromResponse(string jsonResponse)
+        {
+            jsonResponse = jsonResponse.Trim().Replace("\\n", "").Replace("\\", "");
+            var startIndex = jsonResponse.IndexOf("\"video_url\":\"") + 13;
+            var endIndex = jsonResponse.IndexOf("\"", startIndex);
+            return jsonResponse.Substring(startIndex, endIndex - startIndex);
+        }
+
+        // Downloads the processed video from the Flask server.
+        private async Task DownloadVideoAsync(string videoUrl)
+        {
+            using var client = new HttpClient();
+            var videoData = await client.GetByteArrayAsync(videoUrl);
+
+            // Save the processed video locally.
+            localFilePath = Path.Combine(FileSystem.AppDataDirectory, "stabilized_video.mp4");
+            await File.WriteAllBytesAsync(localFilePath, videoData);
+
+            StatusLabel.Text = "Video downloaded and processed successfully.";
+
+            // Display the processed video from the local file.
+            ShowProcessedVideo(localFilePath);
+
+            // Hide the loading overlay.
+            HideLoadingScreen();
+        }
+
         // Shares the processed video file when the download button is clicked.
         private void OnDownloadButtonClicked(object sender, EventArgs e)
         {
@@ -236,6 +236,10 @@ namespace PupilTrack
                     Title = "Download Stabilized Video",
                     File = new ShareFile(localFilePath)
                 });
+            }
+            else
+            {
+                StatusLabel.Text = "No video available to download.";
             }
         }
 
@@ -250,29 +254,13 @@ namespace PupilTrack
 
             if (fileResult != null)
             {
+                StatusLabel.Text = "Uploading video...";
                 await UploadVideoAsync(fileResult.FullPath);
             }
-        }
-
-        // Checks if a processed video exists in the processed folder.
-        private async Task<bool> CheckForProcessedVideoAsync()
-        {
-            // Wait 5 seconds to allow processing to complete.
-            await Task.Delay(5000);
-
-            if (Directory.Exists(ProcessedFolderPath))
+            else
             {
-                var files = Directory.GetFiles(ProcessedFolderPath, "*.mp4");
-                if (files.Length > 0)
-                {
-                    // Optionally, sort files by last write time descending.
-                    Array.Sort(files, (a, b) => File.GetLastWriteTime(b).CompareTo(File.GetLastWriteTime(a)));
-                    // Consider the most recent file as the processed video.
-                    localFilePath = files[0];
-                    return true;
-                }
+                StatusLabel.Text = "No video selected.";
             }
-            return false;
         }
 
         private void HGNDetailsResultsClicked(object sender, EventArgs e)
