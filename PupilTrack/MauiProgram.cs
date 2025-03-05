@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;              // For general CommunityToolkit initialization
+using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting; // For SkiaSharp integration
-using CommunityToolkit.Maui;              // For CommunityToolkit
-using CommunityToolkit.Maui.Camera;
 
 namespace PupilTrack;
 
@@ -12,15 +11,15 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseSkiaSharp() // Initialize SkiaSharp
-            .UseMauiCommunityToolkitCamera()
+            .UseMauiCommunityToolkit()            // Initialize the general toolkit
+            .UseMauiCommunityToolkitCamera()      // Enable native CameraView support
+            .UseMauiCommunityToolkitMediaElement()// Enable MediaElement support
+            .UseSkiaSharp()                       // Initialize SkiaSharp
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            })
-            // Initialize the CommunityToolkit MediaElement support.
-            .UseMauiCommunityToolkitMediaElement();
+            });
 
 #if DEBUG
         builder.Logging.AddDebug();
