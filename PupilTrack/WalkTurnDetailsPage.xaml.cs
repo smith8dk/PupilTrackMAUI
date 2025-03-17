@@ -6,4 +6,9 @@ public partial class WalkTurnDetailsPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private async void WalkTurnDetailsBackClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new HomePage());
+    }
 }

@@ -6,4 +6,9 @@ public partial class OneLegDetailsPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private async void OneLegDetailsBackClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new HomePage());
+    }
 }

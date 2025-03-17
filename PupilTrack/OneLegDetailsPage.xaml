@@ -4,88 +4,163 @@
              x:Class="PupilTrack.OneLegDetailsPage"
              Title="One Leg Details Page"
              BackgroundColor="#182330">
+<ScrollView>
+        <!-- Define row structure -->
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-    <!-- ScrollView to make the content scrollable -->
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="400">
-            <!-- Title Section -->
-            <Label Text="One Leg Stand Test"
-                   FontSize="24"
-                   HorizontalOptions="Center"
-                   TextColor="White"
-                   Margin="0,20,0,20"
-                   HorizontalTextAlignment="Center"
-                   FontAttributes="Bold"
-                   LineHeight="1.5" />
+        <!-- Title Section -->
+        <Label Grid.Row="0"
+               Text="One Leg Stand Test"
+               FontSize="24"
+               HorizontalOptions="Center"
+               TextColor="White"
+               Margin="0,20,0,20"
+               HorizontalTextAlignment="Center"
+               FontAttributes="Bold"
+               LineHeight="1.5" />
 
-            <!-- Explanation Container -->
-            <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
-                <StackLayout Padding="15">
-                    <Label Text="The One Leg Stand Test is a field sobriety test that assesses balance, coordination, and attention"
-                           TextColor="#ddd"
-                           FontSize="16"
-                           LineHeight="1.5"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center" />
-                </StackLayout>
-            </Frame>
+        <!-- Explanation Section -->
+        <Frame Grid.Row="1"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+            <StackLayout>
+                <Label Text="Explanation:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="The One Leg Stand Test is a field sobriety test that assesses balance, coordination, and attention."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+        </Frame>
 
-            <!-- Tutorial Container -->
-            <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
-                <StackLayout Padding="15">
-                    <Label Text="Instructions"
-                           TextColor="#ddd"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="1. Stand with feet together and arms at the recipient’s side" TextColor="#ddd" FontSize="14" />
-                    <Label Text="2. Lift one foot, six inches off the ground. Keep the foot parallel to the ground" TextColor="#ddd" FontSize="14" />
-                    <Label Text="3. Focus on the elevated foot and count aloud for 30 seconds" TextColor="#ddd" FontSize="14" />
-                    <Label Text="4. After concluding the count, the recipient may reset their feet" TextColor="#ddd" FontSize="14" />
-                </StackLayout>
-            </Frame>
+        <!-- Tutorial Section -->
+        <Frame Grid.Row="2"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+            <StackLayout>
+                <Label Text="Instructions:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="1. Stand with feet together and arms at the recipient’s side."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="2. Lift one foot, six inches off the ground. Keep the foot parallel to the ground."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="3. Focus on the elevated foot and count aloud for 30 seconds."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="4. After concluding the count, the recipient may reset their feet."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+        </Frame>
 
-            <!-- Clues Container -->
-            <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
-                <StackLayout Padding="15">
-                    <Label Text="Clues of Impairment"
-                           TextColor="#ddd"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="1. Swaying while balancing" TextColor="#ddd" FontSize="14" />
-                    <Label Text="2. Using arms for balance" TextColor="#ddd" FontSize="14" />
-                    <Label Text="3. Hopping" TextColor="#ddd" FontSize="14" />
-                    <Label Text="4. Putting their foot down (losing their balance)" TextColor="#ddd" FontSize="14" />
-                </StackLayout>
-            </Frame>
+        <!-- Clues Section -->
+        <Frame Grid.Row="3"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+            <StackLayout>
+                <Label Text="Clues of Impairment:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="1. Swaying while balancing."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="2. Using arms for balance."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="3. Hopping."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="4. Putting their foot down (losing their balance)."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+        </Frame>
 
-            <!-- Button Container -->
-            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Padding="10" Margin="5">
-                <!-- Back Button -->
-                <Button Text="Back"
-                        BackgroundColor="White"
-                        TextColor="Black"
-                        CornerRadius="25"
-                        Padding="10,10"
-                        WidthRequest="120"
-                        HeightRequest="50"
-                        FontAttributes="Bold" />
+        <!-- Button Section -->
+        <HorizontalStackLayout Grid.Row="5"
+                               Spacing="10"
+                               HorizontalOptions="Center"
+                               Padding="10"
+                               Margin="5">
+            <!-- Back Button -->
+            <Button Text="Back"
+                    BackgroundColor="#1B1B1B"
+                    BorderColor="White"
+                    TextColor="White"
+                    CornerRadius="25"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    Clicked="OneLegDetailsBackClicked" />
 
-                <!-- Test Button -->
-                <Button Text="Test"
-                        BackgroundColor="White"
-                        TextColor="Black"
-                        CornerRadius="25"
-                        Padding="10,10"
-                        WidthRequest="120"
-                        HeightRequest="50"
-                        FontAttributes="Bold" />
-            </HorizontalStackLayout>
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+            <!-- Test Button -->
+            <Button Text="Test"
+                    BackgroundColor="#1B1B1B"
+                    BorderColor="White"
+                    TextColor="White"
+                    CornerRadius="25"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold" />
+        </HorizontalStackLayout>
+    </Grid>
+  </ScrollView>
 </ContentPage>
