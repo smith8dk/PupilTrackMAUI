@@ -12,7 +12,7 @@ namespace PupilTrack
     public partial class HGNTestPage : ContentPage
     {
         // Flask server URL for video stabilization
-        private const string ServerUrl = "http://192.168.1.40:5000";  // Replace with your Flask server URL
+        private const string ServerUrl = "http://192.168.1.183:5000";  // Replace with your Flask server URL
 
         // Local file path for the stabilized video
         private string localFilePath;
