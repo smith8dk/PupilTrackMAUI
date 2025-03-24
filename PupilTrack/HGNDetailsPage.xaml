@@ -5,9 +5,20 @@
              Title="HGN Details Page"
              BackgroundColor="#182330">
 
-    <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="1000" WidthRequest="400">
-        <!-- Title Section -->
-        <Label Text="Horizontal Gaze Test"
+    <ScrollView>
+        <!-- Define row structure -->
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Title Section -->
+            <Label Grid.Row="0"
+               Text="Horizontal Gaze Test"
                FontSize="24"
                HorizontalOptions="Center"
                TextColor="White"
@@ -16,62 +27,108 @@
                FontAttributes="Bold"
                LineHeight="1.5" />
 
-        <!-- Explanation Container -->
-        <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
-            <Label Text="HGN is a standardized field sobriety test to assess a person's level of intoxication by evaluating involuntary eye movement."
-                   TextColor="#ddd"
-                   FontSize="16"
-                   LineHeight="1.5"
-                   HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center" />
-        </Frame>
+            <!-- Explanation Section -->
+            <Frame Grid.Row="1"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+                <StackLayout>
+                    <Label Text="Explanation:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                    <Label Text="HGN is a standardized field sobriety test to assess a person's level of intoxication by evaluating involuntary eye movement."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                </StackLayout>
+            </Frame>
 
-        <!-- Tutorial Container -->
-        <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
-            <Label Text="User conducting the test will direct the user taking the test to gaze at a horizontally moving object (such as a finger or pen). The object must be 12-15 inches from the users face and is slowly moved left to right three times total."
-                   TextColor="#ddd"
-                   FontSize="16"
-                   LineHeight="1.5"
-                   HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center" />
-        </Frame>
+            <!-- Tutorial Section -->
+            <Frame Grid.Row="2"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+                <StackLayout>
+                    <Label Text="Instructions:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                    <Label Text="User conducting the test will direct the user taking the test to gaze at a horizontally moving object (such as a finger or pen). The object must be 12-15 inches from the users face and is slowly moved left to right three times total."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                </StackLayout>
+            </Frame>
 
-        <!-- Clues Container -->
-        <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="15" HasShadow="True" Margin="5">
-            <Label Text="The presence of nystagmus or involuntary movement of the eyes such as jerking or slipping."
-                   TextColor="#ddd"
-                   FontSize="16"
-                   LineHeight="1.5"
-                   HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center" />
-        </Frame>
+            <!-- Clues Section -->
+            <Frame Grid.Row="3"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+                <StackLayout>
+                    <Label Text="Clues of Impairment:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                    <Label Text="The presence of nystagmus or involuntary movement of the eyes such as jerking or slipping."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                </StackLayout>
+            </Frame>
 
-        <!-- Button Container -->
-        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Padding="10" Margin="5">
-            <!-- Back Button -->
-            <Button Text="Back"
-                    BackgroundColor="white "
-                    TextColor="black"
+                <!-- Button Section -->
+                <HorizontalStackLayout 
+                    Grid.Row="5"
+                    Spacing="10"
+                    HorizontalOptions="Center"
+                    Padding="10"
+                    Margin="5">
+                
+                <!-- Back Button -->
+                <Button Text="Back"
+                    BackgroundColor="#1B1B1B"
+                    BorderColor="White"
+                    TextColor="White"
                     CornerRadius="25"
-                    Padding="10,10"
                     WidthRequest="120"
                     HeightRequest="50"
                     FontAttributes="Bold"
-                    Clicked="HGNDetailsBackClicked">
-            </Button>
+                    Clicked="HGNDetailsBackClicked" />
 
-            <!-- Test Button -->
-            <Button Text="Test"
-                    BackgroundColor="white "
-                    TextColor="black"
+                <!-- Test Button -->
+                <Button Text="Test"
+                    BackgroundColor="#1B1B1B"
+                    BorderColor="White"
+                    TextColor="White"
                     CornerRadius="25"
-                    Padding="10,10"
                     WidthRequest="120"
                     HeightRequest="50"
                     FontAttributes="Bold"
-                    Clicked="HGNDetailsTestClicked">    
-            </Button>
-
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+                    Clicked="HGNDetailsTestClicked" />
+            </HorizontalStackLayout>
+        </Grid>
+    </ScrollView>
 </ContentPage>

@@ -4,89 +4,169 @@
              x:Class="PupilTrack.WalkTurnDetailsPage"
              Title="Walk Turn Details Page"
              BackgroundColor="#182330">
+ <ScrollView>
+        <!-- Define row structure -->
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-    <!-- ScrollView to make the content scrollable -->
-    <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="400">
-            <!-- Title Section -->
-            <Label Text="Walk and Turn Test"
-                   FontSize="24"
-                   HorizontalOptions="Center"
-                   TextColor="White"
-                   Margin="0,20,0,20"
-                   HorizontalTextAlignment="Center"
-                   FontAttributes="Bold"
-                   LineHeight="1.5" />
+        <!-- Title Section -->
+        <Label Grid.Row="0"
+               Text="Walk and Turn Test"
+               FontSize="24"
+               HorizontalOptions="Center"
+               TextColor="White"
+               Margin="0,20,0,20"
+               HorizontalTextAlignment="Center"
+               FontAttributes="Bold"
+               LineHeight="1.5" />
 
-            <!-- Explanation Container -->
-            <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
-                <StackLayout Padding="15">
-                    <Label Text="The Walk and Turn Test is a field sobriety that is used to assess balance and coordination"
-                           TextColor="#ddd"
-                           FontSize="16"
-                           LineHeight="1.5"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center" />
-                </StackLayout>
-            </Frame>
+        <!-- Explanation Section -->
+        <Frame Grid.Row="1"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+            <StackLayout>
+                <Label Text="Explanation:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="The Walk and Turn Test is a field sobriety test used to assess balance and coordination."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+        </Frame>
 
-            <!-- Tutorial Container -->
-            <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
-                <StackLayout Padding="15">
-                    <Label Text="Instructions"
-                           TextColor="#ddd"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="1. Put your right foot in front of your left foot on the line with your right heel touching your left toe. Keep your hands to your side." TextColor="#ddd" FontSize="14" />
-                    <Label Text="2. Take nine heel to toe steps forward on the line, count each step. After nine steps turn around keeping one foot on the line" TextColor="#ddd" FontSize="14" />
-                    <Label Text="3. Return to the start taking nine more heel to toe steps" TextColor="#ddd" FontSize="14" />
-                </StackLayout>
-            </Frame>
+        <!-- Tutorial Section -->
+        <Frame Grid.Row="2"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+            <StackLayout>
+                <Label Text="Instructions:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="1. Put your right foot in front of your left foot on the line with your right heel touching your left toe. Keep your hands to your side."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="2. Take nine heel to toe steps forward on the line, count each step. After nine steps, turn around keeping one foot on the line."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="3. Return to the start taking nine more heel to toe steps."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+        </Frame>
 
-            <!-- Clues Container -->
-            <Frame BackgroundColor="#535358" BorderColor="#ddd" CornerRadius="15" Padding="10" HasShadow="True" Margin="5">
-                <StackLayout Padding="15">
-                    <Label Text="Clues of Impairment"
-                           TextColor="#ddd"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="1. Cannot Keep their balance while listening to instructions" TextColor="#ddd" FontSize="14" />
-                    <Label Text="2. Stopping while walking" TextColor="#ddd" FontSize="14" />
-                    <Label Text="3. Stepping off the line" TextColor="#ddd" FontSize="14" />
-                    <Label Text="4. Using their arms to balance" TextColor="#ddd" FontSize="14" />
-                    <Label Text="5. Improper turn" TextColor="#ddd" FontSize="14" />
-                    <Label Text="6. Wrong number of steps" TextColor="#ddd" FontSize="14" />
-                </StackLayout>
-            </Frame>
+        <!-- Clues Section -->
+        <Frame Grid.Row="3"
+               BackgroundColor="White"
+               BorderColor="Black"
+               CornerRadius="15"
+               Padding="15"
+               HasShadow="True"
+               Margin="5">
+            <StackLayout>
+                <Label Text="Clues of Impairment:"
+                       TextColor="Black"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="1. Cannot keep balance while listening to instructions."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="2. Stopping while walking."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="3. Stepping off the line."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="4. Using arms to balance."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="5. Improper turn."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="6. Wrong number of steps."
+                       TextColor="Black"
+                       FontSize="16"
+                       LineHeight="1.5"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+        </Frame>
 
-            <!-- Button Container -->
-            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" Padding="10" Margin="5">
-                <!-- Back Button -->
-                <Button Text="Back"
-                        BackgroundColor="White"
-                        TextColor="Black"
-                        CornerRadius="25"
-                        Padding="10,10"
-                        WidthRequest="120"
-                        HeightRequest="50"
-                        FontAttributes="Bold" />
+        <!-- Button Section -->
+        <HorizontalStackLayout Grid.Row="4"
+                               Spacing="10"
+                               HorizontalOptions="Center"
+                               Padding="10"
+                               Margin="5">
+            <!-- Back Button -->
+            <Button Text="Back"
+                    BackgroundColor="#1B1B1B"
+                    BorderColor="White"
+                    TextColor="White"
+                    CornerRadius="25"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    Clicked="WalkTurnDetailsBackClicked" />
 
-                <!-- Test Button -->
-                <Button Text="Test"
-                        BackgroundColor="White"
-                        TextColor="Black"
-                        CornerRadius="25"
-                        Padding="10,10"
-                        WidthRequest="120"
-                        HeightRequest="50"
-                        FontAttributes="Bold" />
-            </HorizontalStackLayout>
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+            <!-- Test Button -->
+            <Button Text="Test"
+                    BackgroundColor="#1B1B1B"
+                    BorderColor="White"
+                    TextColor="White"
+                    CornerRadius="25"
+                    WidthRequest="120"
+                    HeightRequest="50"
+                    FontAttributes="Bold" />
+        </HorizontalStackLayout>
+    </Grid>
+  </ScrollView>
 </ContentPage>

@@ -7,8 +7,8 @@ public partial class ProfilePage : ContentPage
         InitializeComponent();
     }
 
-    private async void OnBackButtonClicked(object sender, EventArgs e)
+    private async void ProfileBackClicked(object sender, EventArgs e)
     {
-        await Navigation.PopAsync();
+        await Navigation.PushAsync(new HomePage());
     }
 }
