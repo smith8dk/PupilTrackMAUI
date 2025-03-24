@@ -15,11 +15,11 @@
         <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" VerticalOptions="Start">
             <!-- Logo (Left) -->
             <Image Source="logo.png"
-           HeightRequest="75"
-           WidthRequest="75"
-           Grid.Column="0"
-           HorizontalOptions="Start"
-           VerticalOptions="Center" >
+                   HeightRequest="75"
+                   WidthRequest="75"
+                   Grid.Column="0"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnLogoTapped" />
                 </Image.GestureRecognizers>
@@ -27,20 +27,19 @@
 
             <!-- Profile Image (Right) -->
             <Image Source="profile_icon.png"
-           HeightRequest="50"
-           WidthRequest="50"
-           Grid.Column="2"
-           HorizontalOptions="End"
-           VerticalOptions="Center">
+                   HeightRequest="55"
+                   WidthRequest="55"
+                   Grid.Column="2"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnProfileTapped" />
                 </Image.GestureRecognizers>
             </Image>
         </Grid>
 
-
         <!-- Content -->
-        <VerticalStackLayout Grid.Row="1" Spacing="30" VerticalOptions="Center" HorizontalOptions="Center">
+        <VerticalStackLayout Grid.Row="1" Spacing="30" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,80,0,0">
             <Label Text="Welcome!"
                    FontSize="32"
                    TextColor="White"
@@ -92,7 +91,7 @@
                     </Frame>
                     <Label Text="One Leg Stand Test" FontSize="14" TextColor="White" HorizontalOptions="Center" />
                 </VerticalStackLayout>
-                
+
                 <!-- Help Pages -->
                 <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="10" HorizontalOptions="Center">
                     <Frame CornerRadius="50" BackgroundColor="White" HeightRequest="100" WidthRequest="100" Padding="0">
@@ -102,7 +101,7 @@
                             </Image.GestureRecognizers>
                         </Image>
                     </Frame>
-                    <Label Text="Help Pages" FontSize="14" TextColor="White" HorizontalOptions="Center" />
+                    <Label Text="FAQ" FontSize="14" TextColor="White" HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Grid>
         </VerticalStackLayout>

@@ -4,10 +4,91 @@
              x:Class="PupilTrack.HelpPage"
              BackgroundColor="#182330"
              Title="Help Page">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="5">
+
+            <!-- Title Section -->
+            <Label Grid.Row="1"
+               Text="FAQ"
+               FontSize="24"
+               HorizontalOptions="Center"
+               TextColor="White"
+               Margin="0,20,0,20"
+               HorizontalTextAlignment="Center"
+               FontAttributes="Bold"
+               LineHeight="1.5" />
+            
+            <!-- FAQ Section 1 -->
+            <Frame BackgroundColor="White" BorderColor="Black" CornerRadius="20" Padding="25" HasShadow="True" Margin="10">
+                <StackLayout>
+                    <Label Text="How does eye tracking enhance road safety?"
+                           TextColor="Black"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="ToggleFAQ1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label x:Name="FAQ1Answer" Text="Eye tracking technology allows law enforcement to detect signs of driver impairment by analyzing eye movement patterns. This early detection helps prevent accidents and ensures safer roads."
+                           TextColor="Black"
+                           FontSize="18"
+                           LineHeight="1.5"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="False"
+                           Margin="0,10,0,0" />
+                </StackLayout>
+            </Frame>
+
+            <!-- FAQ Section 2 -->
+            <Frame BackgroundColor="White" BorderColor="Black" CornerRadius="20" Padding="25" HasShadow="True" Margin="10">
+                <StackLayout>
+                    <Label Text="Is the app easy to use for law enforcement officers?"
+                           TextColor="Black"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="ToggleFAQ2" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label x:Name="FAQ2Answer" Text="Yes, our app is designed with user-friendly interfaces and intuitive features to ensure ease of use for law enforcement officers, enabling efficient monitoring and analysis."
+                           TextColor="Black"
+                           FontSize="18"
+                           LineHeight="1.5"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="False"
+                           Margin="0,10,0,0" />
+                </StackLayout>
+            </Frame>
+
+            <!-- FAQ Section 3 -->
+            <Frame BackgroundColor="White" BorderColor="Black" CornerRadius="20" Padding="25" HasShadow="True" Margin="10">
+                <StackLayout>
+                    <Label Text="How accurate is the eye tracking technology?"
+                           TextColor="Black"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="ToggleFAQ3" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label x:Name="FAQ3Answer" Text="Our eye tracking technology is highly accurate, providing precise data on driver eye movements. This accuracy is crucial for effective identification of impaired drivers and ensuring road safety."
+                           TextColor="Black"
+                           FontSize="18"
+                           LineHeight="1.5"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           IsVisible="False"
+                           Margin="0,10,0,0" />
+                </StackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
