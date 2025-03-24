@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
+<ContentPage  
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -17,22 +17,26 @@
 
     <ScrollView>
         <Grid>
-            <!-- Define five rows:
-                 Row 0: VideoPlayer (MediaElement)
+            <!-- Define seven rows:
+                 Row 0: MediaElement (VideoPlayer)
                  Row 1: Current state/dimensions label
                  Row 2: Playback control buttons (Play, Pause, Stop, Mute)
-                 Row 3: Position slider
+                 Row 3: Video slider (with markers overlay)
                  Row 4: Position/Duration labels
+                 Row 5: Sudden Movement Counter Label
+                 Row 6: Sudden Movement Timestamps Label
             -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="220" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- MediaElement (VideoPlayer) with no default Source -->
+            <!-- MediaElement for video playback -->
             <toolkit:MediaElement
                 x:Name="VideoPlayer"
                 Grid.Row="0"
@@ -45,9 +49,9 @@
                 MediaOpened="OnMediaOpened"
                 PositionChanged="OnPositionChanged"
                 SeekCompleted="OnSeekCompleted"
-                ShouldShowPlaybackControls ="false"/>
+                ShouldShowPlaybackControls="false" />
 
-            <!-- Current state and dimensions label -->
+            <!-- Current state/dimensions label -->
             <HorizontalStackLayout Grid.Row="1" Padding="0,0,0,15" HorizontalOptions="Center">
                 <Label>
                     <Label.Text>
@@ -81,13 +85,18 @@
                 </Button>
             </Grid>
 
-            <!-- Slider for media position -->
-            <Slider
-                x:Name="PositionSlider"
-                Grid.Row="3"
-                MinimumTrackColor="Gray"
-                DragStarted="Slider_DragStarted"
-                DragCompleted="Slider_DragCompleted" />
+            <!-- Slider for media position with markers overlay -->
+            <AbsoluteLayout Grid.Row="3" HeightRequest="40">
+                <Slider x:Name="PositionSlider"
+                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                        AbsoluteLayout.LayoutFlags="All"
+                        MinimumTrackColor="Gray"
+                        DragStarted="Slider_DragStarted"
+                        DragCompleted="Slider_DragCompleted" />
+                <AbsoluteLayout x:Name="MarkerContainer"
+                                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                AbsoluteLayout.LayoutFlags="All" />
+            </AbsoluteLayout>
 
             <!-- Labels for current position and duration -->
             <Grid Grid.Row="4" HorizontalOptions="Fill">
@@ -96,6 +105,23 @@
                 <Label HorizontalOptions="End" HorizontalTextAlignment="End" 
                        Text="{Binding Duration, Source={x:Reference VideoPlayer}, Converter={StaticResource SecondsToStringConverter}}" />
             </Grid>
+
+            <!-- Sudden Movement Counter Label -->
+            <Label x:Name="MovementCounterLabel" 
+                   Grid.Row="5"
+                   Text="Sudden Movements: 0" 
+                   FontSize="20" 
+                   TextColor="White" 
+                   HorizontalOptions="Center" />
+
+            <!-- Sudden Movement Timestamps Label -->
+            <Label x:Name="MovementTimestampsLabel" 
+                   Grid.Row="6"
+                   Text="Timestamps:" 
+                   FontSize="16" 
+                   TextColor="White" 
+                   HorizontalOptions="Center"
+                   LineBreakMode="WordWrap" />
         </Grid>
     </ScrollView>
 </ContentPage>
