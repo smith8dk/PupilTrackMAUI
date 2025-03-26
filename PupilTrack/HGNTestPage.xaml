@@ -10,13 +10,22 @@
         <ScrollView>
             <StackLayout x:Name="MainContent" Padding="20" Spacing="15">
                 <!-- Camera and Record Button Overlay -->
-                <Grid HorizontalOptions="Center" WidthRequest="300" HeightRequest="400">
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <!-- Camera View -->
                     <toolkit:CameraView x:Name="CameraViewControl"
-                                        WidthRequest="300"
-                                        HeightRequest="400"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand"
                                         BackgroundColor="Black"
                                         MediaCaptured="MyCamera_MediaCaptured" />
+
+                    <Image Source="eye_icon_test.png"
+                        Opacity="0.5"
+                        HeightRequest="150"
+                        WidthRequest="150"
+                        Grid.Column="0"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" >          
+                     </Image>
 
                     <Button x:Name="RecordButton"
                             BackgroundColor="Red"
