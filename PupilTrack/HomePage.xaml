@@ -2,8 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PupilTrack.HomePage"
-             BackgroundColor="#182330"
-             Title="Home Page">
+             BackgroundColor="#182330">
 
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -39,7 +38,7 @@
         </Grid>
 
         <!-- Content -->
-        <VerticalStackLayout Grid.Row="1" Spacing="30" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,80,0,0">
+        <VerticalStackLayout Grid.Row="1" Spacing="30" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,30,0,0">
             <Label Text="Welcome!"
                    FontSize="32"
                    TextColor="White"

@@ -23,13 +23,17 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['PROCESSED_FOLDER'], exist_ok=True)
 os.makedirs(saved_folder, exist_ok=True)
 
-def stabilize_and_detect_movements(input_path, output_path, zoom_factor=1.2, roi_width=900, roi_height=300, movement_threshold=30):
+def stabilize_and_detect_movements(input_path, output_path, zoom_factor=1.2, roi_width=900, roi_height=300, 
+                                    movement_threshold=30, cooldown=0.3, vertical_offset=0.08,
+                                    strict_threshold=50):
     """
-    Stabilize a video, convert it to grayscale, automatically threshold using Otsu's method with reversed colors,
-    and isolate the largest cluster within an elliptical ROI with zoom effect.
+    Stabilize a video, process it in grayscale with a strict binary threshold (only very dark pixels become black),
+    and detect sudden movements.
     
-    Additionally, detect "sudden" movements by calculating the centroid of the largest cluster for each frame.
-    If the centroid moves more than 'movement_threshold' pixels compared to the previous frame, record the timestamp.
+    The function applies an elliptical ROI with a vertical offset (as a fraction of the frame height)
+    to help exclude the eyebrow region from the thresholding. It isolates the largest cluster and tracks its centroid.
+    If the centroid moves more than 'movement_threshold' pixels and the cooldown period has passed,
+    it registers the movement.
     
     Returns a list of timestamps (in seconds) when sudden movement was detected.
     """
@@ -44,11 +48,11 @@ def stabilize_and_detect_movements(input_path, output_path, zoom_factor=1.2, roi
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    # We'll output color frames so we can overlay a red dot.
     out = cv2.VideoWriter(output_path, fourcc, fps, (width, height), isColor=True)
     
     sudden_movements = []
     previous_centroid = None
+    last_detection_time = -cooldown  # Ensures immediate first detection
     frame_index = 0
     
     while cap.isOpened():
@@ -66,28 +70,34 @@ def stabilize_and_detect_movements(input_path, output_path, zoom_factor=1.2, roi
         crop_width = width
         crop_height = height
         cropped_frame = zoomed_frame[center_y - crop_height // 2 : center_y + crop_height // 2,
-                                      center_x - crop_width // 2 : center_x + crop_width // 2]
+                                     center_x - crop_width // 2 : center_x + crop_width // 2]
         
         # Convert to grayscale.
         gray_frame = cv2.cvtColor(cropped_frame, cv2.COLOR_BGR2GRAY)
         
-        # Automatic thresholding using Otsu's method.
-        _, thresholded_frame = cv2.threshold(gray_frame, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        # Get Otsu's threshold value.
+        otsu_thresh, _ = cv2.threshold(gray_frame, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        # Enforce strict threshold if Otsu's value is too high.
+        strict_thresh = strict_threshold if otsu_thresh > strict_threshold else otsu_thresh
+        _, thresholded_frame = cv2.threshold(gray_frame, strict_thresh, 255, cv2.THRESH_BINARY)
         
-        # Invert colors.
+        # Invert colors (so pupil, which is dark, becomes white).
         inverted_frame = cv2.bitwise_not(thresholded_frame)
         
-        # Create a blank mask.
+        # Create an empty mask.
         mask = np.zeros_like(inverted_frame)
+        
+        # Calculate a vertical offset (in pixels) to shift the ROI downward.
+        int_offset = int(height * vertical_offset)
         
         # Adjust ROI dimensions.
         adjusted_roi_width = int(roi_width * 0.7)
         adjusted_roi_height = int(roi_height * 1.2)
         
-        # Define an elliptical ROI at the center.
-        roi_x = width // 2
-        roi_y = height // 2
-        cv2.ellipse(mask, (roi_x, roi_y), (adjusted_roi_width // 2, adjusted_roi_height // 2), 0, 0, 360, 255, -1)
+        # Define an elliptical ROI, shifted downward to exclude eyebrows.
+        int_roi_x = width // 2
+        int_roi_y = (height // 2) + int_offset
+        cv2.ellipse(mask, (int_roi_x, int_roi_y), (adjusted_roi_width // 2, adjusted_roi_height // 2), 0, 0, 360, 255, -1)
         
         # Apply the mask.
         masked_frame = cv2.bitwise_and(inverted_frame, inverted_frame, mask=mask)
@@ -107,7 +117,7 @@ def stabilize_and_detect_movements(input_path, output_path, zoom_factor=1.2, roi
         # Draw the largest contour filled with black.
         cv2.drawContours(largest_cluster_frame, [largest_contour], -1, 0, thickness=cv2.FILLED)
         
-        # Convert the frame to color so we can overlay a red dot.
+        # Convert the frame to color to overlay a red dot.
         color_frame = cv2.cvtColor(largest_cluster_frame, cv2.COLOR_GRAY2BGR)
         
         # Compute centroid of the largest contour.
@@ -120,9 +130,11 @@ def stabilize_and_detect_movements(input_path, output_path, zoom_factor=1.2, roi
             if previous_centroid is not None:
                 dx = current_centroid[0] - previous_centroid[0]
                 dy = current_centroid[1] - previous_centroid[1]
-                distance = math.sqrt(dx*dx + dy*dy)
-                if distance > movement_threshold:
+                distance = math.sqrt(dx * dx + dy * dy)
+                if distance > movement_threshold and (current_timestamp - last_detection_time) >= cooldown:
                     sudden_movements.append(current_timestamp)
+                    last_detection_time = current_timestamp
+            
             previous_centroid = current_centroid
             
             # Draw a red dot at the centroid.
@@ -139,47 +151,41 @@ def stabilize_and_detect_movements(input_path, output_path, zoom_factor=1.2, roi
 
 @app.route('/stabilize', methods=['POST'])
 def stabilize_video():
-    # Check if a video file is provided.
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
-    
+
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
-    
-    # Save the uploaded video.
+
     filename = secure_filename(file.filename)
     input_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(input_path)
     print(f"Uploaded video saved to: {input_path}")
-    
-    # Generate unique output filenames.
+
     timestamp = int(time.time())
     base_name, _ = os.path.splitext(filename)
     processed_filename = f"{base_name}_{timestamp}_processed.mp4"
     processed_path = os.path.join(app.config['PROCESSED_FOLDER'], processed_filename)
-    
-    # Process the video and detect sudden movement timestamps.
+
     movement_timestamps = stabilize_and_detect_movements(
         input_path,
         processed_path,
         zoom_factor=1.2,
         roi_width=900,
         roi_height=300,
-        movement_threshold=30
+        movement_threshold=30,
+        cooldown=0.3,
+        vertical_offset=0.08
     )
-    
+
     print(f"Stabilized video saved to: {processed_path}")
-    
-    # Create a JSON results object.
+
     results = {
         "video_url": f"http://localhost:5000/{app.config['PROCESSED_FOLDER']}/{processed_filename}",
         "sudden_movements": movement_timestamps
     }
     
-    # Save the JSON file in the 'saved' folder.
-    saved_folder = os.path.join(base_dir, "saved")
-    os.makedirs(saved_folder, exist_ok=True)
     json_filename = f"{base_name}_{timestamp}_results.json"
     json_path = os.path.join(saved_folder, json_filename)
     with open(json_path, "w") as f:

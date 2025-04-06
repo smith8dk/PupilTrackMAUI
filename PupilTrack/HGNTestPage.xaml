@@ -13,8 +13,6 @@
                 <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                     <!-- Camera View -->
                     <toolkit:CameraView x:Name="CameraViewControl"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="FillAndExpand"
                                         BackgroundColor="Black"
                                         MediaCaptured="MyCamera_MediaCaptured" />
 

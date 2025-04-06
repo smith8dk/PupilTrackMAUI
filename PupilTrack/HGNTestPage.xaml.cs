@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
+using Microsoft.Maui.Devices; // For DeviceInfo and DevicePlatform
 using System;
 using System.IO;
 using System.Net.Http;
@@ -12,16 +13,15 @@ namespace PupilTrack
     public partial class HGNTestPage : ContentPage
     {
         // Flask server URL for video stabilization
-        private const string ServerUrl = "http://192.168.1.183:5000";  // Replace with your Flask server URL
+        private const string ServerUrl = "http://192.168.1.40:5000";  // Replace with your Flask server URL
 
         // Local file path for the stabilized video
         private string localFilePath;
         private bool isRecording = false;
         private string recordedVideoPath;
 
-        // Folder where processed videos are stored
-        // (Adjust this path if needed)
-        private const string ProcessedFolderPath = @"C:\Users\dswsm\Downloads\PupilTrackMAUI-master\PupilTrackMAUI-master\PupilTrack\Resources\python\processed";
+        // Folder where processed videos are stored (Adjust this path if needed)
+        private const string ProcessedFolderPath = @"C:\Users\dswsm\source\repos\smith8dk\PupilTrackMAUI\PupilTrack\Resources\python\processed\";
 
         public HGNTestPage()
         {
@@ -31,14 +31,12 @@ namespace PupilTrack
         // Helper methods for showing/hiding the loading overlay.
         private void ShowLoadingScreen()
         {
-            // Hide the main UI content and show the overlay.
             MainContent.IsVisible = false;
             LoadingOverlay.IsVisible = true;
         }
 
         private void HideLoadingScreen()
         {
-            // Hide the overlay and show the main UI again.
             LoadingOverlay.IsVisible = false;
             MainContent.IsVisible = true;
         }
@@ -50,6 +48,15 @@ namespace PupilTrack
 
         private async void OnRecordButtonClicked(object sender, EventArgs e)
         {
+            // Check if the app is running on WinUI.
+            if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            {
+                await DisplayAlert("Recording Disabled",
+                    "Recording via external camera is disabled on this platform. Please use the integrated CameraView.",
+                    "OK");
+                return;
+            }
+
             if (!isRecording)
             {
                 isRecording = true;
@@ -73,7 +80,6 @@ namespace PupilTrack
                     var file = await MediaPicker.Default.CaptureVideoAsync();
                     if (file != null)
                     {
-                        // Save the recorded file in the app's data directory.
                         recordedVideoPath = Path.Combine(FileSystem.AppDataDirectory, file.FileName);
                         using var stream = await file.OpenReadAsync();
                         using var newStream = File.OpenWrite(recordedVideoPath);
@@ -81,7 +87,7 @@ namespace PupilTrack
 
                         await DisplayAlert("Recording Complete", $"Video saved at:\n{recordedVideoPath}", "OK");
 
-                        // Optionally, display the recorded video.
+                        // Optionally display the recorded video.
                         ShowRecordedVideo(recordedVideoPath);
 
                         // Start processing/uploading the video.
@@ -108,7 +114,6 @@ namespace PupilTrack
         private void ShowRecordedVideo(string videoPath)
         {
             CameraViewControl.IsVisible = false;
-            // Convert the local file path to a proper file URI.
             string fileUri = new Uri(videoPath).AbsoluteUri;
 
             string htmlString = $@"
@@ -154,12 +159,12 @@ namespace PupilTrack
                 }
                 else
                 {
-                    // If response is not successful, we log error and continue to check for the processed video.
+                    // If response is not successful, log error.
                 }
             }
             catch (Exception ex)
             {
-                // Log error if necessary; we'll check the folder next.
+                // Log error if necessary.
             }
             finally
             {
@@ -170,7 +175,6 @@ namespace PupilTrack
             // Wait 5 seconds for the video to fully process.
             if (await CheckForProcessedVideoAsync())
             {
-                // Navigate to the HGNResultsPage if a processed video is found.
                 await Navigation.PushAsync(new HGNResultsPage());
             }
             else
@@ -186,7 +190,7 @@ namespace PupilTrack
             jsonResponse = jsonResponse.Trim().Replace("\\n", "").Replace("\\", "");
             var startIndex = jsonResponse.IndexOf("\"video_url\":\"") + 13;
             var endIndex = jsonResponse.IndexOf("\"", startIndex);
-            return jsonResponse.Substring(startIndex, endIndex - startIndex);
+            return jsonResponse[startIndex..endIndex];
         }
 
         // Downloads the processed video from the Flask server.
@@ -257,7 +261,6 @@ namespace PupilTrack
         // Checks if a processed video exists in the processed folder.
         private async Task<bool> CheckForProcessedVideoAsync()
         {
-            // Wait 5 seconds to allow processing to complete.
             await Task.Delay(5000);
 
             if (Directory.Exists(ProcessedFolderPath))
@@ -265,9 +268,7 @@ namespace PupilTrack
                 var files = Directory.GetFiles(ProcessedFolderPath, "*.mp4");
                 if (files.Length > 0)
                 {
-                    // Optionally, sort files by last write time descending.
                     Array.Sort(files, (a, b) => File.GetLastWriteTime(b).CompareTo(File.GetLastWriteTime(a)));
-                    // Consider the most recent file as the processed video.
                     localFilePath = files[0];
                     return true;
                 }

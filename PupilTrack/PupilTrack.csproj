@@ -111,7 +111,6 @@
 	<!-- Additional folders -->
 	<ItemGroup>
 		<Folder Include="Resources\python\saved\" />
-		<Folder Include="Resources\python\processed\" />
 		<Folder Include="Resources\python\venv\Include\" />
 		<Folder Include="Resources\python\venv\Lib\" />
 		<Folder Include="Resources\python\venv\Scripts\" />

@@ -4,91 +4,51 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:local="clr-namespace:PupilTrack.Converters"
-    x:Class="PupilTrack.HGNResultsPage"
-    Title="MediaElement"
+    x:Class="PupilTrack.HGNResultsPage" 
     BackgroundColor="#1A1F26">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <!-- Converter for formatting seconds (or TimeSpan) as mm:ss -->
+            <!-- Converters for formatting and icon selection -->
             <local:SecondsToStringConverter x:Key="SecondsToStringConverter" />
+            <local:PlayPauseIconConverter x:Key="PlayPauseIconConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ScrollView>
-        <Grid>
-            <!-- Define seven rows:
-                 Row 0: MediaElement (VideoPlayer)
-                 Row 1: Current state/dimensions label
-                 Row 2: Playback control buttons (Play, Pause, Stop, Mute)
-                 Row 3: Video slider (with markers overlay)
-                 Row 4: Position/Duration labels
-                 Row 5: Sudden Movement Counter Label
-                 Row 6: Sudden Movement Timestamps Label
-            -->
+        <Grid Padding="15">
             <Grid.RowDefinitions>
+                <!-- Row 0: Video Player -->
                 <RowDefinition Height="220" />
-                <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
+                <!-- Row 1: Video Slider -->
                 <RowDefinition Height="40" />
+                <!-- Row 2: Position/Duration Labels (Moved Above Playback Controls) -->
+                <RowDefinition Height="40" />
+                <!-- Row 3: Playback Controls (Moved Below Timestamp Labels) -->
+                <RowDefinition Height="60" />
+                <!-- Row 4: Sudden Movement Counter -->
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <!-- Row 5: Sudden Movement Timestamps -->
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <!-- MediaElement for video playback -->
+            <!-- MediaElement for Video Playback -->
             <toolkit:MediaElement
                 x:Name="VideoPlayer"
                 Grid.Row="0"
                 ShouldAutoPlay="False"
-                MetadataArtworkUrl=""
-                MetadataTitle=""
-                MetadataArtist=""
+                ShouldShowPlaybackControls="False"
                 MediaEnded="OnMediaEnded"
                 MediaFailed="OnMediaFailed"
                 MediaOpened="OnMediaOpened"
                 PositionChanged="OnPositionChanged"
                 SeekCompleted="OnSeekCompleted"
-                ShouldShowPlaybackControls="false" />
+                BackgroundColor="Black" />
 
-            <!-- Current state/dimensions label -->
-            <HorizontalStackLayout Grid.Row="1" Padding="0,0,0,15" HorizontalOptions="Center">
-                <Label>
-                    <Label.Text>
-                        <MultiBinding StringFormat="{}Current State: {0} - Dimensions: {1}x{2}">
-                            <Binding Path="CurrentState" Source="{x:Reference VideoPlayer}" />
-                            <Binding Path="MediaWidth" Source="{x:Reference VideoPlayer}" />
-                            <Binding Path="MediaHeight" Source="{x:Reference VideoPlayer}" />
-                        </MultiBinding>
-                    </Label.Text>
-                </Label>
-            </HorizontalStackLayout>
-
-            <!-- Playback control buttons -->
-            <Grid Grid.Row="2" Padding="0,10,0,10" ColumnDefinitions="*,*,*,*" ColumnSpacing="5">
-                <Button Grid.Column="0" Text="Play" Clicked="OnPlayClicked" />
-                <Button Grid.Column="1" Text="Pause" Clicked="OnPauseClicked" />
-                <Button Grid.Column="2" Text="Stop" Clicked="OnStopClicked" />
-                <Button Grid.Column="3" Text="Mute" Clicked="OnMuteClicked">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding ShouldMute, Source={x:Reference VideoPlayer}}"
-                                     Value="True">
-                            <Setter Property="Text" Value="Unmute" />
-                        </DataTrigger>
-                        <DataTrigger TargetType="Button"
-                                     Binding="{Binding ShouldMute, Source={x:Reference VideoPlayer}}"
-                                     Value="False">
-                            <Setter Property="Text" Value="Mute" />
-                        </DataTrigger>
-                    </Button.Triggers>
-                </Button>
-            </Grid>
-
-            <!-- Slider for media position with markers overlay -->
-            <AbsoluteLayout Grid.Row="3" HeightRequest="40">
+            <!-- Video Position Slider (Above Labels & Buttons) -->
+            <AbsoluteLayout Grid.Row="1" HeightRequest="40">
                 <Slider x:Name="PositionSlider"
-                        AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                        AbsoluteLayout.LayoutBounds="0,0,1,1"
                         AbsoluteLayout.LayoutFlags="All"
                         MinimumTrackColor="Gray"
                         DragStarted="Slider_DragStarted"
@@ -98,28 +58,66 @@
                                 AbsoluteLayout.LayoutFlags="All" />
             </AbsoluteLayout>
 
-            <!-- Labels for current position and duration -->
-            <Grid Grid.Row="4" HorizontalOptions="Fill">
-                <Label HorizontalOptions="Start" 
-                       Text="{Binding Position, Source={x:Reference VideoPlayer}, Converter={StaticResource SecondsToStringConverter}}" />
-                <Label HorizontalOptions="End" HorizontalTextAlignment="End" 
-                       Text="{Binding Duration, Source={x:Reference VideoPlayer}, Converter={StaticResource SecondsToStringConverter}}" />
+            <!-- Position and Duration Labels (Now Above Playback Buttons) -->
+            <Grid Grid.Row="2" Padding="10">
+                <Label HorizontalOptions="Start"
+                       Text="{Binding Position, Source={x:Reference VideoPlayer}, Converter={StaticResource SecondsToStringConverter}}"
+                       TextColor="White" />
+                <Label HorizontalOptions="End"
+                       Text="{Binding Duration, Source={x:Reference VideoPlayer}, Converter={StaticResource SecondsToStringConverter}}"
+                       TextColor="White" />
             </Grid>
 
+            <!-- Unified White Oval for Playback Controls (Now at the Bottom) -->
+            <Frame Grid.Row="3"
+                   BackgroundColor="White"
+                   CornerRadius="30"
+                   HasShadow="False"
+                   Padding="15"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   WidthRequest="220"
+                   HeightRequest="60">
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="40">
+                    <!-- Rewind Button -->
+                    <ImageButton Grid.Column="0"
+                                 Clicked="OnSeekBackwardClicked"
+                                 WidthRequest="45"
+                                 HeightRequest="45"
+                                 BackgroundColor="Transparent"
+                                 Source="forward_icon.png"
+                                 ScaleX="-1" />
+                    <!-- Play/Pause Button -->
+                    <ImageButton Grid.Column="1"
+                                 Clicked="OnPlayPauseClicked"
+                                 WidthRequest="45"
+                                 HeightRequest="45"
+                                 BackgroundColor="Transparent"
+                                 Source="{Binding CurrentState, Source={x:Reference VideoPlayer}, Converter={StaticResource PlayPauseIconConverter}}" />
+                    <!-- Forward Button -->
+                    <ImageButton Grid.Column="2"
+                                 Clicked="OnSeekForwardClicked"
+                                 WidthRequest="45"
+                                 HeightRequest="45"
+                                 BackgroundColor="Transparent"
+                                 Source="forward_icon.png" />
+                </Grid>
+            </Frame>
+
             <!-- Sudden Movement Counter Label -->
-            <Label x:Name="MovementCounterLabel" 
-                   Grid.Row="5"
-                   Text="Sudden Movements: 0" 
-                   FontSize="20" 
-                   TextColor="White" 
+            <Label x:Name="MovementCounterLabel"
+                   Grid.Row="4"
+                   Text="Sudden Movements: 0"
+                   FontSize="20"
+                   TextColor="White"
                    HorizontalOptions="Center" />
 
             <!-- Sudden Movement Timestamps Label -->
-            <Label x:Name="MovementTimestampsLabel" 
-                   Grid.Row="6"
-                   Text="Timestamps:" 
-                   FontSize="16" 
-                   TextColor="White" 
+            <Label x:Name="MovementTimestampsLabel"
+                   Grid.Row="5"
+                   Text="Timestamps:"
+                   FontSize="16"
+                   TextColor="White"
                    HorizontalOptions="Center"
                    LineBreakMode="WordWrap" />
         </Grid>

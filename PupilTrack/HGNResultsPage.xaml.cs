@@ -200,10 +200,43 @@ namespace PupilTrack
             logger.LogInformation("Slider drag started.");
         }
 
-        void OnPlayClicked(object? sender, EventArgs e) => VideoPlayer.Play();
-        void OnPauseClicked(object? sender, EventArgs e) => VideoPlayer.Pause();
-        void OnStopClicked(object? sender, EventArgs e) => VideoPlayer.Stop();
-        void OnMuteClicked(object? sender, EventArgs e) => VideoPlayer.ShouldMute = !VideoPlayer.ShouldMute;
+        // Unified Play/Pause toggle handler.
+        async void OnPlayPauseClicked(object sender, EventArgs e)
+        {
+            if (VideoPlayer.CurrentState == MediaElementState.Playing)
+            {
+                VideoPlayer.Pause();
+                logger.LogInformation("Video paused.");
+            }
+            else
+            {
+                VideoPlayer.Play();
+                logger.LogInformation("Video playing.");
+            }
+            await Task.CompletedTask;
+        }
+
+        // Seek Forward button handler (advances video by 5 seconds).
+        async void OnSeekForwardClicked(object sender, EventArgs e)
+        {
+            TimeSpan newPosition = VideoPlayer.Position + TimeSpan.FromSeconds(5);
+            if (newPosition > VideoPlayer.Duration)
+                newPosition = VideoPlayer.Duration;
+
+            await VideoPlayer.SeekTo(newPosition, CancellationToken.None);
+            logger.LogInformation("Seeked forward to {Position}", newPosition);
+        }
+
+        // Seek Backward button handler (rewinds video by 5 seconds).
+        async void OnSeekBackwardClicked(object sender, EventArgs e)
+        {
+            TimeSpan newPosition = VideoPlayer.Position - TimeSpan.FromSeconds(5);
+            if (newPosition < TimeSpan.Zero)
+                newPosition = TimeSpan.Zero;
+
+            await VideoPlayer.SeekTo(newPosition, CancellationToken.None);
+            logger.LogInformation("Seeked backward to {Position}", newPosition);
+        }
 
         protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
         {
